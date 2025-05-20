@@ -35,14 +35,12 @@ public class PedidoController {
     @PostMapping("/crear")
     @Transactional
     public ResponseEntity<?> crearPedido(@RequestBody PedidoDTO dto) {
-        // 1. Verificar restaurante
         Optional<Restaurante> restauranteOpt = restauranteRepository.findById(dto.getRestauranteId());
         if (restauranteOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Restaurante no encontrado");
         }
         Restaurante restaurante = restauranteOpt.get();
 
-        // 2. Verificar platos
         List<Long> idsPlatos = dto.getPlatos();
         List<Plato> platos = platoRepository.findAllById(idsPlatos);
 
@@ -50,10 +48,13 @@ public class PedidoController {
             return ResponseEntity.badRequest().body("No se encontró ningún plato válido");
         }
 
-        // 3. Crear el pedido desde el DTO
         Pedido pedido = Pedido.fromDTO(dto, restaurante, platos);
 
-        // 4. Calcular ingredientes a restar
+        // 👇 Asegúrate de forzar el código aquí
+        String codigoGenerado = Pedido.generarCodigoPedido();
+        pedido.setCodigoPedido(codigoGenerado);
+        System.out.println(">> CÓDIGO GENERADO (controller): " + codigoGenerado);
+
         Map<Ingrediente, Double> ingredientesARestar = new HashMap<>();
         for (Plato plato : platos) {
             for (PlatoIngrediente pi : plato.getIngredientes()) {
@@ -65,7 +66,6 @@ public class PedidoController {
             }
         }
 
-        // 5. Validar y actualizar stock
         for (Map.Entry<Ingrediente, Double> entry : ingredientesARestar.entrySet()) {
             Ingrediente ingrediente = entry.getKey();
             double cantidadRestar = entry.getValue();
@@ -79,18 +79,10 @@ public class PedidoController {
             ingredienteRepository.save(ingrediente);
         }
 
-        // 6. Verificación opcional de código generado (para depurar)
-        System.out.println(">> CÓDIGO PRE SAVE: " + pedido.getCodigoPedido());
-
-        // 7. Guardar el pedido
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
-
-        // 8. Verificación post-save
-        System.out.println(">> CÓDIGO POST SAVE: " + pedidoGuardado.getCodigoPedido());
-
-        // 9. Responder
         return ResponseEntity.ok(new PedidoDTO(pedidoGuardado));
     }
+
 
     @GetMapping("/buscar/{codigo}")
     public ResponseEntity<PedidoDTO> buscarPorCodigo(@PathVariable String codigo) {
