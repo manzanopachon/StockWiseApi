@@ -69,11 +69,12 @@ public class Pedido {
         Pedido pedido = new Pedido();
         pedido.setNumeroMesa(dto.getNumeroMesa());
         pedido.setRestaurante(restaurante);
-        pedido.setPlatos(platos);
         pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
-        // No establecer código aquí, se hará en @PrePersist
+        pedido.setPlatos(platos);
+        pedido.setCodigoPedido(Pedido.generarCodigoPedido()); // <-- Aseguramos aquí
         return pedido;
     }
+
 
     // Getters y Setters
     public Long getId() { return id; }
