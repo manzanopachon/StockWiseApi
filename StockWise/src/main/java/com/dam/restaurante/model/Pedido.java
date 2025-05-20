@@ -6,16 +6,7 @@ import java.util.Random;
 
 import com.dam.restaurante.dto.PedidoDTO;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 
 @Entity
 public class Pedido {
@@ -24,7 +15,7 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime fechaHora = LocalDateTime.now();
+    private LocalDateTime fechaHora;
 
     private Double total;
 
@@ -33,121 +24,79 @@ public class Pedido {
     private Cliente cliente;
 
     private Integer numeroMesa;
-    
-    @Column(name = "codigo_pedido", unique = true)
+
+    @Column(name = "codigo_pedido", nullable = false, unique = true)
     private String codigoPedido;
 
+    @ManyToOne
+    @JoinColumn(name = "restaurante_id")
+    private Restaurante restaurante;
 
-@ManyToOne
-@JoinColumn(name = "restaurante_id")
-private Restaurante restaurante;
+    @ManyToMany
+    @JoinTable(
+        name = "pedido_plato",
+        joinColumns = @JoinColumn(name = "pedido_id"),
+        inverseJoinColumns = @JoinColumn(name = "plato_id")
+    )
+    private List<Plato> platos;
 
-@ManyToMany
-@JoinTable(
-    name = "pedido_plato",
-    joinColumns = @JoinColumn(name = "pedido_id"),
-    inverseJoinColumns = @JoinColumn(name = "plato_id")
-)
-private List<Plato> platos;
+    // Constructor vacío requerido por JPA
+    public Pedido() {}
 
-
-public Pedido() {
-    this.fechaHora = LocalDateTime.now();
-    this.codigoPedido = generarCodigoPedido(); // Se genera automáticamente siempre
-}
-
-@PrePersist
-public void asegurarCodigoPedido() {
-    if (this.codigoPedido == null || this.codigoPedido.isBlank()) {
-        this.codigoPedido = generarCodigoPedido();
+    // Hook para asegurar código único antes del persist
+    @PrePersist
+    public void asegurarCodigoPedido() {
+        if (this.codigoPedido == null || this.codigoPedido.trim().isEmpty()) {
+            this.codigoPedido = generarCodigoPedido();
+        }
+        if (this.fechaHora == null) {
+            this.fechaHora = LocalDateTime.now();
+        }
     }
-}
-	
 
+    // Lógica de generación del código
+    public static String generarCodigoPedido() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder codigo = new StringBuilder("P-");
+        for (int i = 0; i < 6; i++) {
+            codigo.append(chars.charAt(new Random().nextInt(chars.length())));
+        }
+        return codigo.toString();
+    }
 
+    // Método para crear Pedido desde DTO
+    public static Pedido fromDTO(PedidoDTO dto, Restaurante restaurante, List<Plato> platos) {
+        Pedido pedido = new Pedido();
+        pedido.setNumeroMesa(dto.getNumeroMesa());
+        pedido.setRestaurante(restaurante);
+        pedido.setPlatos(platos);
+        pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
+        // No establecer código aquí, se hará en @PrePersist
+        return pedido;
+    }
 
-    // Getters y setters
-	public Long getId() {
-		return id;
-	}
+    // Getters y Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public LocalDateTime getFechaHora() { return fechaHora; }
+    public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }
 
-	public LocalDateTime getFechaHora() {
-		return fechaHora;
-	}
+    public Double getTotal() { return total; }
+    public void setTotal(Double total) { this.total = total; }
 
-	public void setFechaHora(LocalDateTime fechaHora) {
-		this.fechaHora = fechaHora;
-	}
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
-	public Double getTotal() {
-		return total;
-	}
+    public Integer getNumeroMesa() { return numeroMesa; }
+    public void setNumeroMesa(Integer numeroMesa) { this.numeroMesa = numeroMesa; }
 
-	public void setTotal(Double total) {
-		this.total = total;
-	}
+    public String getCodigoPedido() { return codigoPedido; }
+    public void setCodigoPedido(String codigoPedido) { this.codigoPedido = codigoPedido; }
 
-	public Cliente getCliente() {
-		return cliente;
-	}
+    public Restaurante getRestaurante() { return restaurante; }
+    public void setRestaurante(Restaurante restaurante) { this.restaurante = restaurante; }
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
-	public Integer getNumeroMesa() {
-		return numeroMesa;
-	}
-
-	public void setNumeroMesa(Integer numeroMesa) {
-		this.numeroMesa = numeroMesa;
-	}
-
-	public Restaurante getRestaurante() {
-		return restaurante;
-	}
-
-	public void setRestaurante(Restaurante restaurante) {
-		this.restaurante = restaurante;
-	}
-
-	public List<Plato> getPlatos() {
-		return platos;
-	}
-
-	public void setPlatos(List<Plato> platos) {
-		this.platos = platos;
-	}
-
-	public String getCodigoPedido() {
-		return codigoPedido;
-	}
-
-	public void setCodigoPedido(String codigoPedido) {
-		this.codigoPedido = codigoPedido;
-	}
-
-	public static Pedido fromDTO(PedidoDTO dto, Restaurante restaurante, List<Plato> platos) {
-	    Pedido pedido = new Pedido();
-	    pedido.setNumeroMesa(dto.getNumeroMesa());
-	    pedido.setRestaurante(restaurante);
-	    pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
-	    pedido.setPlatos(platos);
-	    //pedido.setCodigoPedido(generarCodigoPedido());
-	    return pedido;
-	}
-	
-	public static String generarCodigoPedido() {
-	    String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	    StringBuilder codigo = new StringBuilder("P-");
-	    for (int i = 0; i < 6; i++) {
-	        codigo.append(chars.charAt(new Random().nextInt(chars.length())));
-	    }
-	    return codigo.toString();
-	}
-    
+    public List<Plato> getPlatos() { return platos; }
+    public void setPlatos(List<Plato> platos) { this.platos = platos; }
 }
