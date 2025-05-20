@@ -25,7 +25,7 @@ public class Pedido {
 
     private Integer numeroMesa;
 
-    @Column(name = "codigo_pedido", unique = true)
+    @Column(name = "codigo_pedido", nullable = false, unique = true)
     private String codigoPedido;
 
     @ManyToOne
@@ -40,20 +40,15 @@ public class Pedido {
     )
     private List<Plato> platos;
 
-    // Constructor vacío requerido por JPA
     public Pedido() {}
 
-
     @PrePersist
-    public void prePersist() {
+    public void asignarCodigoPedido() {
         if (this.codigoPedido == null || this.codigoPedido.isBlank()) {
             this.codigoPedido = generarCodigoPedido();
         }
     }
 
-
-
-    // Lógica de generación del código
     public static String generarCodigoPedido() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder codigo = new StringBuilder("P-");
@@ -63,7 +58,6 @@ public class Pedido {
         return codigo.toString();
     }
 
-    // Método para crear Pedido desde DTO
     public static Pedido fromDTO(PedidoDTO dto, Restaurante restaurante, List<Plato> platos) {
         Pedido pedido = new Pedido();
         pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
@@ -73,12 +67,8 @@ public class Pedido {
         return pedido;
     }
 
+    // Getters y Setters...
 
-
-
-
-
-    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
