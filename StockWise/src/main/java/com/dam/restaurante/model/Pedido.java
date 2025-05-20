@@ -49,21 +49,7 @@ public class Pedido {
 
     public Pedido() {}
 
-    @PrePersist
-    public void prePersist() {
-        if (this.codigoPedido == null || this.codigoPedido.isBlank()) {
-            this.codigoPedido = generarCodigoPedido();
-        }
-        if (this.fechaHora == null) {
-            this.fechaHora = LocalDateTime.now();
-        }
-        if (this.estadoPedido == null) {
-            this.estadoPedido = EstadoPedido.PENDIENTE;
-        }
-        if (this.total == null) {
-            this.total = calcularTotal();
-        }
-    }
+
 
     private double calcularTotal() {
         if (platos == null || platos.isEmpty()) return 0.0;

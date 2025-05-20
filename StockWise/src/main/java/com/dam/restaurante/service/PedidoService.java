@@ -50,25 +50,25 @@ public class PedidoService {
 
     // ✅ Crear un pedido a partir de DTO (cliente gestionado internamente)
     public Pedido crearPedidoDesdeDTO(PedidoDTO dto) {
-       
         Restaurante restaurante = restauranteRepository.findById(dto.getRestauranteId())
             .orElseThrow(() -> new RuntimeException("Restaurante no encontrado"));
 
         List<Plato> platos = dto.getPlatos().stream()
             .map(id -> platoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Plato con ID " + id + " no encontrado")))
+                .orElseThrow(() -> new RuntimeException("Plato no encontrado: " + id)))
             .collect(Collectors.toList());
 
         Pedido pedido = Pedido.fromDTO(dto, restaurante, platos);
-       
 
-        // El @PrePersist se encarga de:
-        // - generar códigoPedido
-        // - calcular total
-        // - asignar fechaHora y estado PENDIENTE
+        // ✅ Generar código explícitamente
+        pedido.setCodigoPedido(Pedido.generarCodigoPedido());
+
+        // ✅ Calcular total explícitamente
+        pedido.setTotal(platos.stream().mapToDouble(Plato::getPrecio).sum());
 
         return pedidoRepository.save(pedido);
     }
+
 
     // ✅ Obtener pedido por código
     public Pedido obtenerPedidoPorCodigo(String codigoPedido) {
