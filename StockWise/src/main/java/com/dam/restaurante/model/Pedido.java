@@ -33,7 +33,7 @@ public class Pedido {
 
     private Integer numeroMesa;
     
-    @Column(name = "codigo_pedido", unique = true, nullable = false)
+    @Column(name = "codigo_pedido", unique = true)
     private String codigoPedido;
 
 

@@ -93,10 +93,13 @@ public class PedidoController {
 		 }
 	 
 		 // 6. Guardar el pedido
-		 pedidoRepository.save(pedido);
+		 //pedidoRepository.save(pedido);
 	 
 		 // 7. Responder
-		 return ResponseEntity.ok(new PedidoDTO(pedido));
+		 //return ResponseEntity.ok(new PedidoDTO(pedido));
+		 Pedido pedidoGuardado = pedidoRepository.save(pedido);
+		 return ResponseEntity.ok(new PedidoDTO(pedidoGuardado));
+
 	 }
 	 
 	 @GetMapping("/buscar/{codigo}")
