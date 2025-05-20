@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 
 @Entity
 public class Pedido {
@@ -48,6 +49,20 @@ private Restaurante restaurante;
     inverseJoinColumns = @JoinColumn(name = "plato_id")
 )
 private List<Plato> platos;
+
+
+public Pedido() {
+    this.fechaHora = LocalDateTime.now();
+    this.codigoPedido = generarCodigoPedido(); // Se genera automáticamente siempre
+}
+
+@PrePersist
+public void asegurarCodigoPedido() {
+    if (this.codigoPedido == null || this.codigoPedido.isBlank()) {
+        this.codigoPedido = generarCodigoPedido();
+    }
+}
+	
 
 
 
@@ -122,7 +137,7 @@ private List<Plato> platos;
 	    pedido.setRestaurante(restaurante);
 	    pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
 	    pedido.setPlatos(platos);
-	    pedido.setCodigoPedido(generarCodigoPedido());
+	    //pedido.setCodigoPedido(generarCodigoPedido());
 	    return pedido;
 	}
 	
