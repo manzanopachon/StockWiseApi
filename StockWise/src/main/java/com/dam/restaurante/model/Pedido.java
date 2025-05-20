@@ -11,6 +11,12 @@ import jakarta.persistence.*;
 @Entity
 public class Pedido {
 
+    public enum EstadoPedido {
+        PENDIENTE,
+        EN_PROCESO,
+        FINALIZADO
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,13 +25,14 @@ public class Pedido {
 
     private Double total;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_pedido", nullable = false)
+    private EstadoPedido estadoPedido = EstadoPedido.PENDIENTE;
+
 
     private Integer numeroMesa;
 
-    @JoinColumn(name = "codigo_pedido", nullable = false, unique = true)
+    @Column(name = "codigo_pedido", nullable = false, unique = true)
     private String codigoPedido;
 
     @ManyToOne
@@ -43,10 +50,26 @@ public class Pedido {
     public Pedido() {}
 
     @PrePersist
-    public void asignarCodigoPedido() {
+    public void prePersist() {
         if (this.codigoPedido == null || this.codigoPedido.isBlank()) {
             this.codigoPedido = generarCodigoPedido();
         }
+        if (this.fechaHora == null) {
+            this.fechaHora = LocalDateTime.now();
+        }
+        if (this.estadoPedido == null) {
+            this.estadoPedido = EstadoPedido.PENDIENTE;
+        }
+        if (this.total == null) {
+            this.total = calcularTotal();
+        }
+    }
+
+    private double calcularTotal() {
+        if (platos == null || platos.isEmpty()) return 0.0;
+        return platos.stream()
+                     .mapToDouble(Plato::getPrecio)
+                     .sum();
     }
 
     public static String generarCodigoPedido() {
@@ -67,7 +90,7 @@ public class Pedido {
         return pedido;
     }
 
-    // Getters y Setters...
+    // Getters y Setters
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -78,8 +101,8 @@ public class Pedido {
     public Double getTotal() { return total; }
     public void setTotal(Double total) { this.total = total; }
 
-    public Cliente getCliente() { return cliente; }
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+    public EstadoPedido getEstadoPedido() { return estadoPedido; }
+    public void setEstadoPedido(EstadoPedido estadoPedido) { this.estadoPedido = estadoPedido; }
 
     public Integer getNumeroMesa() { return numeroMesa; }
     public void setNumeroMesa(Integer numeroMesa) { this.numeroMesa = numeroMesa; }

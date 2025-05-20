@@ -12,34 +12,29 @@ public class PedidoDTO {
     private Integer numeroMesa;
     private Long restauranteId;
     private List<Long> platos;
+
+    // Solo para respuesta (no debe ser seteado por el cliente)
     private LocalDateTime fechaHora;
     private String codigoPedido;
+    private String estadoPedido;
 
-    // Constructor completo
-    public PedidoDTO(Integer numeroMesa, Long restauranteId, List<Long> platos, LocalDateTime fechaHora, String codigoPedido) {
-        this.numeroMesa = numeroMesa;
-        this.restauranteId = restauranteId;
-        this.platos = platos;
-        this.fechaHora = fechaHora;
-        this.codigoPedido = codigoPedido;
-    }
-
-    // Constructor vacío (necesario para @RequestBody en controladores)
     public PedidoDTO() {}
 
-    // Constructor para convertir Pedido a DTO
+    // Constructor de respuesta
     public PedidoDTO(Pedido pedido) {
         this.numeroMesa = pedido.getNumeroMesa();
         this.restauranteId = pedido.getRestaurante().getId();
         this.fechaHora = pedido.getFechaHora();
         this.codigoPedido = pedido.getCodigoPedido();
+        this.estadoPedido = pedido.getEstadoPedido().name();
         this.platos = pedido.getPlatos()
                             .stream()
                             .map(Plato::getId)
                             .collect(Collectors.toList());
     }
 
-    // Getters y Setters
+    // Getters y setters
+
     public Integer getNumeroMesa() {
         return numeroMesa;
     }
@@ -78,5 +73,13 @@ public class PedidoDTO {
 
     public void setCodigoPedido(String codigoPedido) {
         this.codigoPedido = codigoPedido;
+    }
+
+    public String getEstadoPedido() {
+        return estadoPedido;
+    }
+
+    public void setEstadoPedido(String estadoPedido) {
+        this.estadoPedido = estadoPedido;
     }
 }

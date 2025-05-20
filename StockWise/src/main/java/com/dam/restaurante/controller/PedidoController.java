@@ -1,19 +1,16 @@
 package com.dam.restaurante.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.dam.restaurante.dto.PedidoDTO;
-import com.dam.restaurante.model.*;
-import com.dam.restaurante.repository.*;
+import com.dam.restaurante.model.Pedido;
+import com.dam.restaurante.model.Pedido.EstadoPedido;
+import com.dam.restaurante.service.PedidoService;
 
-import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -21,73 +18,71 @@ import jakarta.transaction.Transactional;
 public class PedidoController {
 
     @Autowired
-    private RestauranteRepository restauranteRepository;
+    private PedidoService pedidoService;
 
-    @Autowired
-    private PlatoRepository platoRepository;
-
-    @Autowired
-    private IngredienteRepository ingredienteRepository;
-
-    @Autowired
-    private PedidoRepository pedidoRepository;
-
+    // 🟢 Crear pedido (cliente)
     @PostMapping("/crear")
-    @Transactional
     public ResponseEntity<?> crearPedido(@RequestBody PedidoDTO dto) {
-        Optional<Restaurante> restauranteOpt = restauranteRepository.findById(dto.getRestauranteId());
-        if (restauranteOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Restaurante no encontrado");
+        try {
+            Pedido nuevoPedido = pedidoService.crearPedidoDesdeDTO(dto);
+            return ResponseEntity.ok(new PedidoDTO(nuevoPedido));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        Restaurante restaurante = restauranteOpt.get();
-
-        List<Long> idsPlatos = dto.getPlatos();
-        List<Plato> platos = platoRepository.findAllById(idsPlatos);
-
-        if (platos.isEmpty()) {
-            return ResponseEntity.badRequest().body("No se encontró ningún plato válido");
-        }
-
-        Pedido pedido = Pedido.fromDTO(dto, restaurante, platos);
-
-        // 👇 Asegúrate de forzar el código aquí
-        String codigoGenerado = Pedido.generarCodigoPedido();
-        pedido.setCodigoPedido(codigoGenerado);
-        System.out.println(">> CÓDIGO GENERADO (controller): " + codigoGenerado);
-
-        Map<Ingrediente, Double> ingredientesARestar = new HashMap<>();
-        for (Plato plato : platos) {
-            for (PlatoIngrediente pi : plato.getIngredientes()) {
-                ingredientesARestar.merge(
-                    pi.getIngrediente(),
-                    pi.getCantidadNecesaria(),
-                    Double::sum
-                );
-            }
-        }
-
-        for (Map.Entry<Ingrediente, Double> entry : ingredientesARestar.entrySet()) {
-            Ingrediente ingrediente = entry.getKey();
-            double cantidadRestar = entry.getValue();
-
-            if (ingrediente.getCantidadStock() < cantidadRestar) {
-                return ResponseEntity.badRequest()
-                    .body("No hay suficiente stock para " + ingrediente.getNombre());
-            }
-
-            ingrediente.setCantidadStock(ingrediente.getCantidadStock() - cantidadRestar);
-            ingredienteRepository.save(ingrediente);
-        }
-
-        Pedido pedidoGuardado = pedidoRepository.save(pedido);
-        return ResponseEntity.ok(new PedidoDTO(pedidoGuardado));
     }
 
-
+    // 🟢 Consultar pedido por código (cliente)
     @GetMapping("/buscar/{codigo}")
-    public ResponseEntity<PedidoDTO> buscarPorCodigo(@PathVariable String codigo) {
-        Pedido pedido = pedidoRepository.findByCodigoPedido(codigo);
-        if (pedido == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(new PedidoDTO(pedido));
+    public ResponseEntity<?> buscarPorCodigo(@PathVariable String codigo) {
+        try {
+            Pedido pedido = pedidoService.obtenerPedidoPorCodigo(codigo);
+            return ResponseEntity.ok(new PedidoDTO(pedido));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // 🟢 Obtener solo el estado del pedido (cliente)
+    @GetMapping("/estado/{codigo}")
+    public ResponseEntity<?> obtenerEstadoPorCodigo(@PathVariable String codigo) {
+        try {
+            Pedido pedido = pedidoService.obtenerPedidoPorCodigo(codigo);
+            return ResponseEntity.ok(pedido.getEstadoPedido().name());
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // 🔵 Obtener todos los pedidos pendientes por restaurante (empleado)
+    @GetMapping("/restaurante/{id}/pendientes")
+    public ResponseEntity<?> obtenerPedidosPendientes(@PathVariable Long id) {
+        List<Pedido> pedidos = pedidoService.obtenerPedidosPorRestauranteYEstado(id, EstadoPedido.PENDIENTE);
+        List<PedidoDTO> dtos = pedidos.stream()
+            .map(PedidoDTO::new)
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
+    }
+
+    // 🔵 Confirmar pedido y descontar ingredientes (empleado)
+    @PostMapping("/confirmar/{id}")
+    public ResponseEntity<?> confirmarPedido(@PathVariable Long id) {
+        try {
+            pedidoService.confirmarPedido(id);
+            return ResponseEntity.ok("Pedido confirmado y stock actualizado");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // 🔵 Cambiar estado manualmente (empleado)
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<?> cambiarEstado(@PathVariable Long id, @RequestParam EstadoPedido estado) {
+        try {
+            Pedido pedido = pedidoService.obtenerPorId(id);
+            pedido.setEstadoPedido(estado);
+            return ResponseEntity.ok(new PedidoDTO(pedidoService.guardar(pedido)));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
