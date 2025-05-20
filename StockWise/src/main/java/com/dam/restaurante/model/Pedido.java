@@ -25,7 +25,7 @@ public class Pedido {
 
     private Integer numeroMesa;
 
-    @Column(name = "codigo_pedido", nullable = false, unique = true)
+    @JoinColumn(name = "codigo_pedido", nullable = false, unique = true)
     private String codigoPedido;
 
     @ManyToOne
