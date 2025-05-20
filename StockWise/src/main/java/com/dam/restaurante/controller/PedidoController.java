@@ -101,6 +101,8 @@ public class PedidoController {
 		 System.out.println(">> Código generado: " + pedido.getCodigoPedido());
 		 System.out.println(">> Restaurante: " + pedido.getRestaurante().getNombre());
 		 System.out.println(">> Platos: " + pedido.getPlatos().size());
+		 System.out.println(">> Código antes de guardar: " + pedido.getCodigoPedido());
+
 
 		 Pedido pedidoGuardado = pedidoRepository.save(pedido);
 		 return ResponseEntity.ok(new PedidoDTO(pedidoGuardado));
