@@ -97,6 +97,10 @@ public class PedidoController {
 	 
 		 // 7. Responder
 		 //return ResponseEntity.ok(new PedidoDTO(pedido));
+		 System.out.println(">> Código generado: " + pedido.getCodigoPedido());
+		 System.out.println(">> Restaurante: " + pedido.getRestaurante().getNombre());
+		 System.out.println(">> Platos: " + pedido.getPlatos().size());
+
 		 Pedido pedidoGuardado = pedidoRepository.save(pedido);
 		 return ResponseEntity.ok(new PedidoDTO(pedidoGuardado));
 
