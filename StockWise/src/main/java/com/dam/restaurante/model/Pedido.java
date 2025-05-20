@@ -43,16 +43,7 @@ public class Pedido {
     // Constructor vacío requerido por JPA
     public Pedido() {}
 
-    // Hook para asegurar código único antes del persist
-    @PrePersist
-    public void asegurarCodigoPedido() {
-        if (this.codigoPedido == null || this.codigoPedido.trim().isEmpty()) {
-            this.codigoPedido = generarCodigoPedido();
-        }
-        if (this.fechaHora == null) {
-            this.fechaHora = LocalDateTime.now();
-        }
-    }
+
 
     // Lógica de generación del código
     public static String generarCodigoPedido() {
@@ -71,9 +62,13 @@ public class Pedido {
         pedido.setRestaurante(restaurante);
         pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
         pedido.setPlatos(platos);
-        pedido.setCodigoPedido(Pedido.generarCodigoPedido()); // <-- Aseguramos aquí
+        
+        // AÑADE ESTA LÍNEA, SÍ O SÍ
+        pedido.setCodigoPedido(generarCodigoPedido());
+
         return pedido;
     }
+
 
 
     // Getters y Setters
