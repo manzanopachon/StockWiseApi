@@ -44,6 +44,12 @@ public class Pedido {
     public Pedido() {}
 
 
+    @PrePersist
+    public void prePersist() {
+        if (this.codigoPedido == null || this.codigoPedido.isBlank()) {
+            this.codigoPedido = generarCodigoPedido();
+        }
+    }
 
 
 
