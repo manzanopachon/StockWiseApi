@@ -43,13 +43,7 @@ public class Pedido {
     // Constructor vacío requerido por JPA
     public Pedido() {}
 
-    
-    @PrePersist
-    private void asignarCodigoSiFalta() {
-        if (this.codigoPedido == null || this.codigoPedido.isBlank()) {
-            this.codigoPedido = generarCodigoPedido();
-        }
-    }
+
 
 
 
