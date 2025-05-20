@@ -3,6 +3,9 @@ package com.dam.restaurante.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.dam.restaurante.model.Pedido;
+import com.dam.restaurante.model.Plato;
+
 public class PedidoDTO {
     private Integer numeroMesa;
     private Long restauranteId;
@@ -12,7 +15,21 @@ public class PedidoDTO {
     private String codigoPedido;
 
 
-    // Getters y setters
+    public PedidoDTO(Integer numeroMesa, Long restauranteId, List<Long> platos, LocalDateTime fechaHora,
+			String codigoPedido) {
+		super();
+		this.numeroMesa = numeroMesa;
+		this.restauranteId = restauranteId;
+		this.platos = platos;
+		this.fechaHora = fechaHora;
+		this.codigoPedido = codigoPedido;
+	}
+
+	public PedidoDTO() {
+		super();
+	}
+
+	// Getters y setters
     public Integer getNumeroMesa() {
         return numeroMesa;
     }
@@ -51,6 +68,18 @@ public class PedidoDTO {
 
 	public void setCodigoPedido(String codigoPedido) {
 		this.codigoPedido = codigoPedido;
+	}
+
+	public PedidoDTO(Pedido pedido) {
+	    this.numeroMesa = pedido.getNumeroMesa();
+	    this.restauranteId = pedido.getRestaurante().getId();
+	    this.fechaHora = pedido.getFechaHora();
+	    this.codigoPedido = pedido.getCodigoPedido();
+	    // Si quieres también devolver los platos (por id):
+	    this.platos = pedido.getPlatos()
+	                        .stream()
+	                        .map(Plato::getId)
+	                        .toList();
 	}
 
     

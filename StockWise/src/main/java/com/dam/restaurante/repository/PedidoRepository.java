@@ -6,4 +6,6 @@ import com.dam.restaurante.model.Pedido;
 
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     // Aquí puedes añadir consultas personalizadas si es necesario
+	Pedido findByCodigoPedido(String codigoPedido);
+
 }

@@ -1,6 +1,5 @@
 package com.dam.restaurante.controller;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +8,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,5 +99,12 @@ public class PedidoController {
 		 return ResponseEntity.ok("Pedido realizado correctamente");
 	 }
 	 
+	 @GetMapping("/buscar/{codigo}")
+	 public ResponseEntity<PedidoDTO> buscarPorCodigo(@PathVariable String codigo) {
+	     Pedido pedido = pedidoRepository.findByCodigoPedido(codigo);
+	     if (pedido == null) return ResponseEntity.notFound().build();
+	     return ResponseEntity.ok(new PedidoDTO(pedido));
+	 }
+
 
 }

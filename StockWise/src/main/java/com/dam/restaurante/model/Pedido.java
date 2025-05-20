@@ -1,10 +1,20 @@
 package com.dam.restaurante.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 import com.dam.restaurante.dto.PedidoDTO;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Pedido {
@@ -107,13 +117,22 @@ private List<Plato> platos;
 	}
 
 	public static Pedido fromDTO(PedidoDTO dto, Restaurante restaurante, List<Plato> platos) {
-    Pedido pedido = new Pedido();
-    pedido.setNumeroMesa(dto.getNumeroMesa());
-    pedido.setRestaurante(restaurante);
-    pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
-    pedido.setPlatos(platos);
-    pedido.setCodigoPedido(dto.getCodigoPedido());
-    return pedido;
-}
+	    Pedido pedido = new Pedido();
+	    pedido.setNumeroMesa(dto.getNumeroMesa());
+	    pedido.setRestaurante(restaurante);
+	    pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
+	    pedido.setPlatos(platos);
+	    pedido.setCodigoPedido(generarCodigoPedido());
+	    return pedido;
+	}
+	
+	public static String generarCodigoPedido() {
+	    String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	    StringBuilder codigo = new StringBuilder("P-");
+	    for (int i = 0; i < 6; i++) {
+	        codigo.append(chars.charAt(new Random().nextInt(chars.length())));
+	    }
+	    return codigo.toString();
+	}
     
 }
