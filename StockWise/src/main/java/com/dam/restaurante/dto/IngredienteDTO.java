@@ -15,17 +15,20 @@ public class IngredienteDTO {
     
 
     public IngredienteDTO(Long id, String nombre, String unidadMedida, Double cantidadStock,
-                          Double prioridadBaja, Double prioridadMedia, Double prioridadAlta,
-                          String proveedor, String fotoUrl) {
-        this.id = id;
-        this.nombre = nombre;
-        this.unidadMedida = unidadMedida;
-        this.cantidadStock = cantidadStock;
-        this.color = calcularColor(cantidadStock, prioridadBaja, prioridadMedia, prioridadAlta);
-        this.proveedor = proveedor;
-        this.fotoUrl = fotoUrl;
+            Double prioridadBaja, Double prioridadMedia, Double prioridadAlta,
+            String proveedor, String fotoUrl) {
+		this.id = id;
+		this.nombre = nombre;
+		this.unidadMedida = unidadMedida;
+		this.cantidadStock = cantidadStock;
+		this.prioridadBaja = prioridadBaja;
+		this.prioridadMedia = prioridadMedia;
+		this.prioridadAlta = prioridadAlta;
+		this.color = calcularColor(cantidadStock, prioridadBaja, prioridadMedia, prioridadAlta);
+		this.proveedor = proveedor;
+		this.fotoUrl = fotoUrl;
     }
-    
+
     
 
     public IngredienteDTO() {

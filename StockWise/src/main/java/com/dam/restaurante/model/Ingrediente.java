@@ -15,10 +15,16 @@ public class Ingrediente {
 
     private Double cantidadStock;
 
-    private Double prioridadBaja;  // Verde
-    private Double prioridadMedia; // Amarillo
-    private Double prioridadAlta;  // Rojo
+    @Column(name = "prioridad_alta")
+    private Double prioridadAlta;
 
+    @Column(name = "prioridad_media")
+    private Double prioridadMedia;
+
+    @Column(name = "prioridad_baja")
+    private Double prioridadBaja;
+
+    
     private String proveedor;
 
     @Column(columnDefinition = "TEXT")
