@@ -8,6 +8,9 @@ public class PedidoDTO {
     private Long restauranteId;
     private List<Long> platos;
     private LocalDateTime fechaHora;  // Agregamos la fecha y hora
+   
+    private String codigoPedido;
+
 
     // Getters y setters
     public Integer getNumeroMesa() {
@@ -42,5 +45,14 @@ public class PedidoDTO {
         this.fechaHora = fechaHora;
     }
 
+	public String getCodigoPedido() {
+		return codigoPedido;
+	}
+
+	public void setCodigoPedido(String codigoPedido) {
+		this.codigoPedido = codigoPedido;
+	}
+
+    
     
 }

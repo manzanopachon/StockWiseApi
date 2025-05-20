@@ -22,6 +22,10 @@ public class Pedido {
     private Cliente cliente;
 
     private Integer numeroMesa;
+    
+    @Column(name = "codigo_pedido", unique = true, nullable = false)
+    private String codigoPedido;
+
 
 @ManyToOne
 @JoinColumn(name = "restaurante_id")
@@ -94,12 +98,21 @@ private List<Plato> platos;
 		this.platos = platos;
 	}
 
+	public String getCodigoPedido() {
+		return codigoPedido;
+	}
+
+	public void setCodigoPedido(String codigoPedido) {
+		this.codigoPedido = codigoPedido;
+	}
+
 	public static Pedido fromDTO(PedidoDTO dto, Restaurante restaurante, List<Plato> platos) {
     Pedido pedido = new Pedido();
     pedido.setNumeroMesa(dto.getNumeroMesa());
     pedido.setRestaurante(restaurante);
     pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
     pedido.setPlatos(platos);
+    pedido.setCodigoPedido(dto.getCodigoPedido());
     return pedido;
 }
     
