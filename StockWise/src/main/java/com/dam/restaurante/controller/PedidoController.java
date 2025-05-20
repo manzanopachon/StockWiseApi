@@ -65,6 +65,7 @@ public class PedidoController {
 		}
 		 // 3. Crear el pedido desde el DTO
 		 Pedido pedido = Pedido.fromDTO(dto, restaurante, platos);
+		 pedido.setCodigoPedido(Pedido.generarCodigoPedido());
 	 
 		 // 4. Calcular ingredientes a restar
 		 Map<Ingrediente, Double> ingredientesARestar = new HashMap<>();
