@@ -60,13 +60,13 @@ public class Pedido {
     // Método para crear Pedido desde DTO
     public static Pedido fromDTO(PedidoDTO dto, Restaurante restaurante, List<Plato> platos) {
         Pedido pedido = new Pedido();
-        pedido.setCodigoPedido(generarCodigoPedido()); // 👈 usa el setter
         pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
         pedido.setNumeroMesa(dto.getNumeroMesa());
         pedido.setRestaurante(restaurante);
         pedido.setPlatos(platos);
         return pedido;
     }
+
 
 
 
