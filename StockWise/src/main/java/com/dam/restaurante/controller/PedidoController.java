@@ -80,7 +80,7 @@ public class PedidoController {
         }
 
         // ✅ 6. Generar código aquí SIEMPRE antes del save
-        pedido.setCodigoPedido(Pedido.generarCodigoPedido());
+        //pedido.setCodigoPedido(Pedido.generarCodigoPedido());
         System.out.println(">> CÓDIGO GENERADO (controller): " + pedido.getCodigoPedido());
 
         // 7. Guardar el pedido
