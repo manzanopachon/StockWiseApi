@@ -96,7 +96,7 @@ public class PedidoController {
 		 pedidoRepository.save(pedido);
 	 
 		 // 7. Responder
-		 return ResponseEntity.ok("Pedido realizado correctamente");
+		 return ResponseEntity.ok(new PedidoDTO(pedido));
 	 }
 	 
 	 @GetMapping("/buscar/{codigo}")
