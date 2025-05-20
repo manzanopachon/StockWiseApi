@@ -25,7 +25,7 @@ public class Pedido {
 
     private Integer numeroMesa;
 
-    @Column(name = "codigo_pedido", nullable = false, unique = true)
+    @Column(name = "codigo_pedido", unique = true)
     private String codigoPedido;
 
     @ManyToOne
@@ -42,6 +42,14 @@ public class Pedido {
 
     // Constructor vacío requerido por JPA
     public Pedido() {}
+
+    
+    @PrePersist
+    private void asignarCodigoSiFalta() {
+        if (this.codigoPedido == null || this.codigoPedido.isBlank()) {
+            this.codigoPedido = generarCodigoPedido();
+        }
+    }
 
 
 
