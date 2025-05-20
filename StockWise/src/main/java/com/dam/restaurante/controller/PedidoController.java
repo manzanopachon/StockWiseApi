@@ -79,14 +79,16 @@ public class PedidoController {
             ingredienteRepository.save(ingrediente);
         }
 
-        // ✅ 6. Generar código aquí SIEMPRE antes del save
-        //pedido.setCodigoPedido(Pedido.generarCodigoPedido());
-        System.out.println(">> CÓDIGO GENERADO (controller): " + pedido.getCodigoPedido());
+        // 6. Verificación opcional de código generado (para depurar)
+        System.out.println(">> CÓDIGO PRE SAVE: " + pedido.getCodigoPedido());
 
         // 7. Guardar el pedido
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
-        // 8. Responder
+        // 8. Verificación post-save
+        System.out.println(">> CÓDIGO POST SAVE: " + pedidoGuardado.getCodigoPedido());
+
+        // 9. Responder
         return ResponseEntity.ok(new PedidoDTO(pedidoGuardado));
     }
 
