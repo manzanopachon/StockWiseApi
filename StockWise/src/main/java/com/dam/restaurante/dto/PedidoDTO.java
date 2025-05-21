@@ -13,10 +13,10 @@ public class PedidoDTO {
     private Integer numeroMesa;
     private Long restauranteId;
 
-    // Este es el input que recibe el cliente: lista de IDs de platos (uno por cada unidad)
+    // Entrada desde el cliente
     private List<Long> platos;
 
-    // Este es el output que el backend devuelve al frontend
+    // Salida al cliente
     private List<PlatoInfo> detallesPlatos;
 
     private Double total;
@@ -35,12 +35,11 @@ public class PedidoDTO {
         this.codigoPedido = pedido.getCodigoPedido();
         this.estadoPedido = pedido.getEstadoPedido().name();
 
-        // ✅ Agrupar los IDs para envío a frontend
+        // ✅ Cada plato repetido según cantidad
         this.platos = pedido.getDetalles().stream()
                 .flatMap(det -> java.util.Collections.nCopies(det.getCantidad(), det.getPlato().getId()).stream())
                 .collect(Collectors.toList());
 
-        // ✅ Preparar la info visual (nombre y precio de cada plato, repetido si hay varios)
         this.detallesPlatos = pedido.getDetalles().stream()
                 .flatMap(det -> java.util.Collections.nCopies(det.getCantidad(),
                         new PlatoInfo(det.getPlato().getNombre(), det.getPrecio())).stream())
@@ -48,6 +47,7 @@ public class PedidoDTO {
     }
 
     // Getters y Setters
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

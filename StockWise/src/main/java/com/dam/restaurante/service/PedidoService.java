@@ -139,5 +139,10 @@ public class PedidoService {
     public List<Pedido> obtenerPedidosPorRestauranteYEstado(Long restauranteId, EstadoPedido estado) {
         return pedidoRepository.findAllByRestauranteIdAndEstadoPedido(restauranteId, estado);
     }
+    
+    public List<Pedido> obtenerPedidosPorRestaurante(Long restauranteId) {
+        return pedidoRepository.findAllByRestauranteId(restauranteId);
+    }
+
 
 }

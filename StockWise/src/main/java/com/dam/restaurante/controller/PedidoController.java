@@ -63,6 +63,18 @@ public class PedidoController {
         return ResponseEntity.ok(dtos);
     }
 
+    
+    @GetMapping("/restaurante/{id}/todos")
+    public ResponseEntity<?> obtenerTodosLosPedidos(@PathVariable Long id) {
+        List<Pedido> pedidos = pedidoService.obtenerPedidosPorRestaurante(id);
+        List<PedidoDTO> dtos = pedidos.stream()
+            .map(PedidoDTO::new)
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
+    }
+
+
+    
     // 🔵 Confirmar pedido y descontar ingredientes (empleado)
     @PostMapping("/confirmar/{id}")
     public ResponseEntity<?> confirmarPedido(@PathVariable Long id) {

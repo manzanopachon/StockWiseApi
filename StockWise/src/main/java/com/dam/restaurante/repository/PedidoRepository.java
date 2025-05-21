@@ -15,4 +15,5 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     List<Pedido> findAllByRestauranteIdAndEstadoPedido(Long restauranteId, Pedido.EstadoPedido estadoPedido);
 
+    List<Pedido> findAllByRestauranteId(Long restauranteId);
 }

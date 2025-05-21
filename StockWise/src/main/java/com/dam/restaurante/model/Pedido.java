@@ -1,6 +1,7 @@
 package com.dam.restaurante.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -38,9 +39,9 @@ public class Pedido {
     @JoinColumn(name = "restaurante_id")
     private Restaurante restaurante;
 
-    // ✅ NUEVA relación con detalles
+    // Relación 1:N con detalles
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PedidoDetalle> detalles;
+    private List<PedidoDetalle> detalles = new ArrayList<>();  // ✅ Inicializado
 
     public Pedido() {}
 
@@ -58,6 +59,7 @@ public class Pedido {
         pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
         pedido.setNumeroMesa(dto.getNumeroMesa());
         pedido.setRestaurante(restaurante);
+        pedido.setDetalles(new ArrayList<>()); // ✅ Importante
         return pedido;
     }
 
