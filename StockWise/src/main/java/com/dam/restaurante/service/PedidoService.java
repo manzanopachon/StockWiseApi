@@ -1,5 +1,6 @@
 package com.dam.restaurante.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,21 +54,43 @@ public class PedidoService {
         Restaurante restaurante = restauranteRepository.findById(dto.getRestauranteId())
             .orElseThrow(() -> new RuntimeException("Restaurante no encontrado"));
 
-        List<Plato> platos = dto.getPlatos().stream()
-            .map(id -> platoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Plato no encontrado: " + id)))
-            .collect(Collectors.toList());
-
-        Pedido pedido = Pedido.fromDTO(dto, restaurante, platos);
-
-        // ✅ Generar código explícitamente
+        Pedido pedido = new Pedido();
+        pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
+        pedido.setNumeroMesa(dto.getNumeroMesa());
+        pedido.setRestaurante(restaurante);
         pedido.setCodigoPedido(Pedido.generarCodigoPedido());
+        pedido.setEstadoPedido(Pedido.EstadoPedido.PENDIENTE);
 
-        // ✅ Calcular total explícitamente
-        pedido.setTotal(platos.stream().mapToDouble(Plato::getPrecio).sum());
+        Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
-        return pedidoRepository.save(pedido);
+        // ✅ Agrupar platos por ID para contar cantidades
+        var mapaCantidad = dto.getPlatos().stream()
+            .collect(Collectors.groupingBy(id -> id, Collectors.counting()));
+
+        double total = 0.0;
+
+        for (var entry : mapaCantidad.entrySet()) {
+            Long platoId = entry.getKey();
+            int cantidad = entry.getValue().intValue();
+
+            Plato plato = platoRepository.findById(platoId)
+                .orElseThrow(() -> new RuntimeException("Plato no encontrado: " + platoId));
+
+            PedidoDetalle detalle = new PedidoDetalle();
+            detalle.setPedido(pedidoGuardado);
+            detalle.setPlato(plato);
+            detalle.setCantidad(cantidad);
+            detalle.setPrecio(plato.getPrecio());
+
+            pedidoDetalleRepository.save(detalle);
+
+            total += plato.getPrecio() * cantidad;
+        }
+
+        pedidoGuardado.setTotal(total);
+        return pedidoRepository.save(pedidoGuardado);
     }
+
 
 
     // ✅ Obtener pedido por código

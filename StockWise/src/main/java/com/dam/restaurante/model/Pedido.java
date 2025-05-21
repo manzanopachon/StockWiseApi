@@ -29,7 +29,6 @@ public class Pedido {
     @Column(name = "estado_pedido", nullable = false)
     private EstadoPedido estadoPedido = EstadoPedido.PENDIENTE;
 
-
     private Integer numeroMesa;
 
     @Column(name = "codigo_pedido", nullable = false, unique = true)
@@ -39,24 +38,11 @@ public class Pedido {
     @JoinColumn(name = "restaurante_id")
     private Restaurante restaurante;
 
-    @ManyToMany
-    @JoinTable(
-        name = "pedido_plato",
-        joinColumns = @JoinColumn(name = "pedido_id"),
-        inverseJoinColumns = @JoinColumn(name = "plato_id")
-    )
-    private List<Plato> platos;
+    // ✅ NUEVA relación con detalles
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidoDetalle> detalles;
 
     public Pedido() {}
-
-
-
-    private double calcularTotal() {
-        if (platos == null || platos.isEmpty()) return 0.0;
-        return platos.stream()
-                     .mapToDouble(Plato::getPrecio)
-                     .sum();
-    }
 
     public static String generarCodigoPedido() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -67,12 +53,11 @@ public class Pedido {
         return codigo.toString();
     }
 
-    public static Pedido fromDTO(PedidoDTO dto, Restaurante restaurante, List<Plato> platos) {
+    public static Pedido fromDTO(PedidoDTO dto, Restaurante restaurante) {
         Pedido pedido = new Pedido();
         pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
         pedido.setNumeroMesa(dto.getNumeroMesa());
         pedido.setRestaurante(restaurante);
-        pedido.setPlatos(platos);
         return pedido;
     }
 
@@ -99,6 +84,6 @@ public class Pedido {
     public Restaurante getRestaurante() { return restaurante; }
     public void setRestaurante(Restaurante restaurante) { this.restaurante = restaurante; }
 
-    public List<Plato> getPlatos() { return platos; }
-    public void setPlatos(List<Plato> platos) { this.platos = platos; }
+    public List<PedidoDetalle> getDetalles() { return detalles; }
+    public void setDetalles(List<PedidoDetalle> detalles) { this.detalles = detalles; }
 }

@@ -78,11 +78,18 @@ public class PedidoController {
     @PatchMapping("/{id}/estado")
     public ResponseEntity<?> cambiarEstado(@PathVariable Long id, @RequestParam EstadoPedido estado) {
         try {
-            Pedido pedido = pedidoService.obtenerPorId(id);
-            pedido.setEstadoPedido(estado);
-            return ResponseEntity.ok(new PedidoDTO(pedidoService.guardar(pedido)));
+            pedidoService.actualizarEstado(id, estado);
+
+            // Si el estado es FINALIZADO, aplicar la lógica de stock
+            if (estado == EstadoPedido.FINALIZADO) {	
+                pedidoService.confirmarPedido(id); // Esto ya descuenta ingredientes
+            }
+
+            Pedido pedidoActualizado = pedidoService.obtenerPorId(id);
+            return ResponseEntity.ok(new PedidoDTO(pedidoActualizado));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 }

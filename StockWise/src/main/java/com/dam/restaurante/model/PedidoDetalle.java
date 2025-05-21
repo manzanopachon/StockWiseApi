@@ -19,48 +19,30 @@ public class PedidoDetalle {
 
     private Integer cantidad;
 
-    private Double precio;
+    private Double precio; // Precio del plato en ese momento
+
+    public PedidoDetalle() {}
+
+    public PedidoDetalle(Pedido pedido, Plato plato, Integer cantidad, Double precio) {
+        this.pedido = pedido;
+        this.plato = plato;
+        this.cantidad = cantidad;
+        this.precio = precio;
+    }
 
     // Getters y setters
-	public Long getId() {
-		return id;
-	}
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Pedido getPedido() { return pedido; }
+    public void setPedido(Pedido pedido) { this.pedido = pedido; }
 
-	public Pedido getPedido() {
-		return pedido;
-	}
+    public Plato getPlato() { return plato; }
+    public void setPlato(Plato plato) { this.plato = plato; }
 
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
+    public Integer getCantidad() { return cantidad; }
+    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
 
-	public Plato getPlato() {
-		return plato;
-	}
-
-	public void setPlato(Plato plato) {
-		this.plato = plato;
-	}
-
-	public Integer getCantidad() {
-		return cantidad;
-	}
-
-	public void setCantidad(Integer cantidad) {
-		this.cantidad = cantidad;
-	}
-
-	public Double getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(Double precio) {
-		this.precio = precio;
-	}
-
-    
+    public Double getPrecio() { return precio; }
+    public void setPrecio(Double precio) { this.precio = precio; }
 }
