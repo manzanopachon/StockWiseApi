@@ -72,7 +72,8 @@ public class PedidoService {
 
     // ✅ Obtener pedido por código
     public Pedido obtenerPedidoPorCodigo(String codigoPedido) {
-        return pedidoRepository.findByCodigoPedido(codigoPedido)
+        return pedidoRepository.buscarPorCodigoIgnorandoCase(codigoPedido)
+
             .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
     }
 
