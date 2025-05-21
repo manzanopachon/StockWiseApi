@@ -125,7 +125,7 @@ public class PedidoService {
         }
 
         // Actualizamos estado
-        pedido.setEstadoPedido(Pedido.EstadoPedido.EN_PROCESO);
+        //pedido.setEstadoPedido(Pedido.EstadoPedido.EN_PROCESO);
         pedidoRepository.save(pedido);
     }
     
