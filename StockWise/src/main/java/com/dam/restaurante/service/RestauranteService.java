@@ -2,10 +2,12 @@ package com.dam.restaurante.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dam.restaurante.dto.RestauranteDTO;
 import com.dam.restaurante.model.Restaurante;
 import com.dam.restaurante.repository.RestauranteRepository;
 
@@ -19,8 +21,11 @@ public class RestauranteService {
         return restauranteRepository.save(restaurante);
     }
 
-    public List<Restaurante> obtenerTodos() {
-        return restauranteRepository.findAll();
+    public List<RestauranteDTO> obtenerTodos() {
+        return restauranteRepository.findAll()
+                .stream()
+                .map(RestauranteDTO::new)
+                .collect(Collectors.toList());
     }
 
     public Restaurante obtenerPorNombre(String nombre) {

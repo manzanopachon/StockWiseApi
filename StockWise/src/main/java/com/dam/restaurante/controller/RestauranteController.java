@@ -32,7 +32,7 @@ public class RestauranteController {
 
     // Obtener todos los restaurantes
     @GetMapping
-    public List<Restaurante> obtenerTodos() {
+    public List<RestauranteDTO> obtenerTodos() {
         return restauranteService.obtenerTodos();
     }
 
