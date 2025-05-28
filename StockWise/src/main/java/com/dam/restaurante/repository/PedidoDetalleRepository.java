@@ -9,6 +9,6 @@ import com.dam.restaurante.model.PedidoDetalle;
 
 public interface PedidoDetalleRepository extends JpaRepository<PedidoDetalle, Long> {
 
-	List<PedidoDetalle> findAllByPedido(Pedido pedido);
+    List<PedidoDetalle> findAllByPedido(Pedido pedido);
     // Aquí puedes añadir consultas personalizadas si es necesario
 }

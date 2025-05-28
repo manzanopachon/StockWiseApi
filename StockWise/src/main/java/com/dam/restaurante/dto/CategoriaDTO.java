@@ -5,7 +5,6 @@ public class CategoriaDTO {
     private String nombre;
 
     // Constructor vacío, getters y setters
-    
 
     public CategoriaDTO(Long id, String nombre) {
         this.id = id;
@@ -13,13 +12,13 @@ public class CategoriaDTO {
     }
 
     public CategoriaDTO(String nombre) {
-		super();
-		this.nombre = nombre;
-	}
+        super();
+        this.nombre = nombre;
+    }
 
-	public CategoriaDTO() {
-		super();
-	}
+    public CategoriaDTO() {
+        super();
+    }
 
     public Long getId() {
         return id;

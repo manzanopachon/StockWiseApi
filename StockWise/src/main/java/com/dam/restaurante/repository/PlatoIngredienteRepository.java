@@ -11,9 +11,13 @@ import com.dam.restaurante.model.PlatoIngrediente;
 
 public interface PlatoIngredienteRepository extends JpaRepository<PlatoIngrediente, Long> {
     void deleteByPlatoAndIngrediente(Plato plato, Ingrediente ingrediente);
+
     List<PlatoIngrediente> findByPlatoId(Long platoId);
+
     Optional<PlatoIngrediente> findByPlatoIdAndIngredienteId(Long platoId, Long ingredienteId);
-	void deleteByPlatoId(Long platoId);
-	void deleteByPlato_IdAndIngredienteId(Long platoId, Long ingredienteId); // Cambiado a 'Plato_Id'
+
+    void deleteByPlatoId(Long platoId);
+
+    void deleteByPlato_IdAndIngredienteId(Long platoId, Long ingredienteId); // Cambiado a 'Plato_Id'
 
 }

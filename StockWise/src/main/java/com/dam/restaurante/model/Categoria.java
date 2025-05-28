@@ -8,17 +8,17 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 public class Categoria {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String nombre;
+	private String nombre;
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<Plato> platos;
-    
-    // Getters y setters
+	@OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+	@JsonBackReference
+	private List<Plato> platos;
+
+	// Getters y setters
 	public Long getId() {
 		return id;
 	}
@@ -42,6 +42,5 @@ public class Categoria {
 	public void setPlatos(List<Plato> platos) {
 		this.platos = platos;
 	}
-
 
 }

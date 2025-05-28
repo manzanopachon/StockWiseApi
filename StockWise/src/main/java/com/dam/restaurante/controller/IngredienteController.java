@@ -36,24 +36,25 @@ public class IngredienteController {
     public List<IngredienteDTO> listarPorRestaurante(@PathVariable Long restauranteId) {
         return ingredienteService.obtenerIngredientesPorRestaurante(restauranteId);
     }
-    
 
     @GetMapping("/{id}")
     public IngredienteDTO obtenerIngrediente(@PathVariable Long id) {
         return ingredienteService.obtenerPorId(id);
     }
-/*
-    @PostMapping
-    public IngredienteDTO crearIngrediente(@RequestBody IngredienteDTO dto) {
-        return ingredienteService.crearIngrediente(dto);
-    }
-    */
-    //Crear Ingrediente
+
+    /*
+     * @PostMapping
+     * public IngredienteDTO crearIngrediente(@RequestBody IngredienteDTO dto) {
+     * return ingredienteService.crearIngrediente(dto);
+     * }
+     */
+    // Crear Ingrediente
     @PostMapping("/crear")
     public ResponseEntity<IngredienteDTO> crearIngrediente(@RequestBody IngredienteCreateDTO dto) {
         IngredienteDTO creado = ingredienteService.crearIngrediente(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
+
     @PutMapping("/{id}")
     public IngredienteDTO actualizarIngrediente(@PathVariable Long id, @RequestBody IngredienteDTO dto) {
         return ingredienteService.actualizarIngrediente(id, dto);

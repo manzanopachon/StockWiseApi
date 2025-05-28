@@ -13,15 +13,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity   // Si luego quieres usar @PreAuthorize
+@EnableMethodSecurity // Si luego quieres usar @PreAuthorize
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-            .authorizeRequests()
+                .authorizeRequests()
                 .requestMatchers("/**").permitAll() // Permitir todo sin autenticación
-            .anyRequest().permitAll(); // No es necesario autenticarse en ningún endpoint
+                .anyRequest().permitAll(); // No es necesario autenticarse en ningún endpoint
         return http.build();
     }
 
@@ -36,8 +36,8 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOrigins("http://127.0.0.1:5500")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE");
+                        .allowedOrigins("http://127.0.0.1:5500")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE");
             }
         };
     }

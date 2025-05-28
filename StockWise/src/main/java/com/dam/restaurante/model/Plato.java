@@ -16,29 +16,29 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Plato {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String nombre;
+	private String nombre;
 
-    private String descripcion;
+	private String descripcion;
 
-    private Double precio;
+	private Double precio;
 
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "categoria_id")
-    private Categoria categoria;
+	@ManyToOne
+	@JsonBackReference
+	@JoinColumn(name = "categoria_id")
+	private Categoria categoria;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurante_id")
-    private Restaurante restaurante;
+	@ManyToOne
+	@JoinColumn(name = "restaurante_id")
+	private Restaurante restaurante;
 
-    @OneToMany(mappedBy = "plato", cascade = CascadeType.ALL)
-    private List<PlatoIngrediente> ingredientes;
+	@OneToMany(mappedBy = "plato", cascade = CascadeType.ALL)
+	private List<PlatoIngrediente> ingredientes;
 
-    // Getters y setters
+	// Getters y setters
 	public Long getId() {
 		return id;
 	}
@@ -95,7 +95,4 @@ public class Plato {
 		this.ingredientes = ingredientes;
 	}
 
-	
-
-   
 }

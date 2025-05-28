@@ -3,19 +3,19 @@ package com.dam.restaurante.dto;
 import com.dam.restaurante.model.Restaurante;
 
 public class RestauranteDTO {
-    private Long id;
-    private String nombre;
-    private String direccion;
-    private String telefono;
+	private Long id;
+	private String nombre;
+	private String direccion;
+	private String telefono;
 
-    public RestauranteDTO(Restaurante restaurante) {
-        this.id = restaurante.getId();
-        this.nombre = restaurante.getNombre();
-        this.direccion = restaurante.getDireccion();
-        this.telefono = restaurante.getTelefono();
-    }
-    
-    //Getters y Setters
+	public RestauranteDTO(Restaurante restaurante) {
+		this.id = restaurante.getId();
+		this.nombre = restaurante.getNombre();
+		this.direccion = restaurante.getDireccion();
+		this.telefono = restaurante.getTelefono();
+	}
+
+	// Getters y Setters
 
 	public Long getId() {
 		return id;
@@ -49,7 +49,6 @@ public class RestauranteDTO {
 		this.telefono = telefono;
 	}
 
-    // Getters y setters...
-    
-    
+	// Getters y setters...
+
 }

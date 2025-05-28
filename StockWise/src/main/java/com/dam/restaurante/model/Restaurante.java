@@ -6,23 +6,22 @@ import java.util.List;
 @Entity
 public class Restaurante {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String nombre;
+	private String nombre;
 
-    private String direccion;
+	private String direccion;
 
-    private String telefono;
+	private String telefono;
 
-    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL)
-    private List<Empleado> empleados;
+	@OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL)
+	private List<Empleado> empleados;
 
+	// Getters y setters
 
-    // Getters y setters
-    
-    public Long getId() {
+	public Long getId() {
 		return id;
 	}
 

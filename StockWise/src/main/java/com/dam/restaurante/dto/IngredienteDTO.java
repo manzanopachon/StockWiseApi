@@ -2,21 +2,20 @@ package com.dam.restaurante.dto;
 
 public class IngredienteDTO {
 
-    private Long id;
-    private String nombre;
-    private String unidadMedida;
-    private Double cantidadStock;
-    private String color; // verde, amarillo o rojo
-    private Double prioridadBaja;
-    private Double prioridadMedia;
-    private Double prioridadAlta;
-    private String proveedor;
-    private String fotoUrl;
-    
+	private Long id;
+	private String nombre;
+	private String unidadMedida;
+	private Double cantidadStock;
+	private String color; // verde, amarillo o rojo
+	private Double prioridadBaja;
+	private Double prioridadMedia;
+	private Double prioridadAlta;
+	private String proveedor;
+	private String fotoUrl;
 
-    public IngredienteDTO(Long id, String nombre, String unidadMedida, Double cantidadStock,
-            Double prioridadBaja, Double prioridadMedia, Double prioridadAlta,
-            String proveedor, String fotoUrl) {
+	public IngredienteDTO(Long id, String nombre, String unidadMedida, Double cantidadStock,
+			Double prioridadBaja, Double prioridadMedia, Double prioridadAlta,
+			String proveedor, String fotoUrl) {
 		this.id = id;
 		this.nombre = nombre;
 		this.unidadMedida = unidadMedida;
@@ -27,21 +26,22 @@ public class IngredienteDTO {
 		this.color = calcularColor(cantidadStock, prioridadBaja, prioridadMedia, prioridadAlta);
 		this.proveedor = proveedor;
 		this.fotoUrl = fotoUrl;
-    }
+	}
 
-    
-
-    public IngredienteDTO() {
+	public IngredienteDTO() {
 		super();
 	}
 
 	private String calcularColor(Double cantidad, Double baja, Double media, Double alta) {
-        if (cantidad >= baja) return "verde";
-        else if (cantidad >= media) return "amarillo";
-        else return "rojo";
-    }
+		if (cantidad >= baja)
+			return "verde";
+		else if (cantidad >= media)
+			return "amarillo";
+		else
+			return "rojo";
+	}
 
- // Getters y setters
+	// Getters y setters
 	public Long getId() {
 		return id;
 	}
@@ -120,7 +120,6 @@ public class IngredienteDTO {
 
 	public void setPrioridadAlta(Double prioridadAlta) {
 		this.prioridadAlta = prioridadAlta;
-	}    
-    
-	
+	}
+
 }

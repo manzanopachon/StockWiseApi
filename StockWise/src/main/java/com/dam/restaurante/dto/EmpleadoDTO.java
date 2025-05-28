@@ -2,25 +2,26 @@ package com.dam.restaurante.dto;
 
 import com.dam.restaurante.model.Empleado;
 
-
 public class EmpleadoDTO {
-    private Long id;
-    private String nombre;
-    private String apellidos;
-    private String correo;
-    private String puestoTrabajo;
-    private RestauranteDTO restaurante; 
-    private Boolean validado;
+	private Long id;
+	private String nombre;
+	private String apellidos;
+	private String correo;
+	private String puestoTrabajo;
+	private RestauranteDTO restaurante;
+	private Boolean validado;
 
-    public EmpleadoDTO(Empleado empleado) {
-        this.id = empleado.getId();
-        this.nombre = empleado.getNombre();
-        this.apellidos = empleado.getApellidos();
-        this.correo = empleado.getCorreo();
-        this.puestoTrabajo = empleado.getPuestoTrabajo();
-        this.restaurante = new RestauranteDTO(empleado.getRestaurante()); 
-        this.validado = empleado.getValidado();
-    }
+	public EmpleadoDTO(Empleado empleado) {
+		this.id = empleado.getId();
+		this.nombre = empleado.getNombre();
+		this.apellidos = empleado.getApellidos();
+		this.correo = empleado.getCorreo();
+		this.puestoTrabajo = empleado.getPuestoTrabajo();
+		this.restaurante = new RestauranteDTO(empleado.getRestaurante());
+		this.validado = empleado.getValidado();
+	}
+
+	// Getters y setters
 
 	public Long getId() {
 		return id;
@@ -78,6 +79,6 @@ public class EmpleadoDTO {
 		this.restaurante = restaurante;
 	}
 
-    // Getters y setters
-    
+	
+
 }

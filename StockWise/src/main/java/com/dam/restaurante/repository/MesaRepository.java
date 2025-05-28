@@ -10,4 +10,3 @@ public interface MesaRepository extends JpaRepository<Mesa, Long> {
 	Optional<Mesa> findByNumeroAndRestauranteId(int numero, Long restauranteId);
 
 }
-

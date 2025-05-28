@@ -58,23 +58,20 @@ public class PedidoController {
     public ResponseEntity<?> obtenerPedidosPendientes(@PathVariable Long id) {
         List<Pedido> pedidos = pedidoService.obtenerPedidosPorRestauranteYEstado(id, EstadoPedido.PENDIENTE);
         List<PedidoDTO> dtos = pedidos.stream()
-            .map(PedidoDTO::new)
-            .collect(Collectors.toList());
+                .map(PedidoDTO::new)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
 
-    
     @GetMapping("/restaurante/{id}/todos")
     public ResponseEntity<?> obtenerTodosLosPedidos(@PathVariable Long id) {
         List<Pedido> pedidos = pedidoService.obtenerPedidosPorRestaurante(id);
         List<PedidoDTO> dtos = pedidos.stream()
-            .map(PedidoDTO::new)
-            .collect(Collectors.toList());
+                .map(PedidoDTO::new)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
 
-
-    
     // 🔵 Confirmar pedido y descontar ingredientes (empleado)
     @PostMapping("/confirmar/{id}")
     public ResponseEntity<?> confirmarPedido(@PathVariable Long id) {
@@ -93,7 +90,7 @@ public class PedidoController {
             pedidoService.actualizarEstado(id, estado);
 
             // Si el estado es FINALIZADO, aplicar la lógica de stock
-            if (estado == EstadoPedido.FINALIZADO) {	
+            if (estado == EstadoPedido.FINALIZADO) {
                 pedidoService.confirmarPedido(id); // Esto ya descuenta ingredientes
             }
 

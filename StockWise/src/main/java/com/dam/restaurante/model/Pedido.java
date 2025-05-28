@@ -41,9 +41,10 @@ public class Pedido {
 
     // Relación 1:N con detalles
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PedidoDetalle> detalles = new ArrayList<>();  // ✅ Inicializado
+    private List<PedidoDetalle> detalles = new ArrayList<>(); // ✅ Inicializado
 
-    public Pedido() {}
+    public Pedido() {
+    }
 
     public static String generarCodigoPedido() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -65,27 +66,67 @@ public class Pedido {
 
     // Getters y Setters
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public LocalDateTime getFechaHora() { return fechaHora; }
-    public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Double getTotal() { return total; }
-    public void setTotal(Double total) { this.total = total; }
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
+    }
 
-    public EstadoPedido getEstadoPedido() { return estadoPedido; }
-    public void setEstadoPedido(EstadoPedido estadoPedido) { this.estadoPedido = estadoPedido; }
+    public void setFechaHora(LocalDateTime fechaHora) {
+        this.fechaHora = fechaHora;
+    }
 
-    public Integer getNumeroMesa() { return numeroMesa; }
-    public void setNumeroMesa(Integer numeroMesa) { this.numeroMesa = numeroMesa; }
+    public Double getTotal() {
+        return total;
+    }
 
-    public String getCodigoPedido() { return codigoPedido; }
-    public void setCodigoPedido(String codigoPedido) { this.codigoPedido = codigoPedido; }
+    public void setTotal(Double total) {
+        this.total = total;
+    }
 
-    public Restaurante getRestaurante() { return restaurante; }
-    public void setRestaurante(Restaurante restaurante) { this.restaurante = restaurante; }
+    public EstadoPedido getEstadoPedido() {
+        return estadoPedido;
+    }
 
-    public List<PedidoDetalle> getDetalles() { return detalles; }
-    public void setDetalles(List<PedidoDetalle> detalles) { this.detalles = detalles; }
+    public void setEstadoPedido(EstadoPedido estadoPedido) {
+        this.estadoPedido = estadoPedido;
+    }
+
+    public Integer getNumeroMesa() {
+        return numeroMesa;
+    }
+
+    public void setNumeroMesa(Integer numeroMesa) {
+        this.numeroMesa = numeroMesa;
+    }
+
+    public String getCodigoPedido() {
+        return codigoPedido;
+    }
+
+    public void setCodigoPedido(String codigoPedido) {
+        this.codigoPedido = codigoPedido;
+    }
+
+    public Restaurante getRestaurante() {
+        return restaurante;
+    }
+
+    public void setRestaurante(Restaurante restaurante) {
+        this.restaurante = restaurante;
+    }
+
+    public List<PedidoDetalle> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<PedidoDetalle> detalles) {
+        this.detalles = detalles;
+    }
 }

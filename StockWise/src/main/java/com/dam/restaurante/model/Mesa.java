@@ -10,17 +10,17 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Mesa {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private Integer numero;
+	private Integer numero;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurante_id")
-    private Restaurante restaurante;
+	@ManyToOne
+	@JoinColumn(name = "restaurante_id")
+	private Restaurante restaurante;
 
-    // Getters y setters
+	// Getters y setters
 	public Long getId() {
 		return id;
 	}
@@ -45,5 +45,4 @@ public class Mesa {
 		this.restaurante = restaurante;
 	}
 
-    
 }

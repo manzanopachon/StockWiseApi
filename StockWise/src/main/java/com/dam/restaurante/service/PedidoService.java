@@ -33,16 +33,15 @@ public class PedidoService {
     @Autowired
     private RestauranteRepository restauranteRepository;
 
-
     @Autowired
     private PedidoDetalleRepository pedidoDetalleRepository;
 
     @Autowired
     private IngredienteRepository ingredienteRepository;
-    
+
     public Pedido obtenerPorId(Long id) {
         return pedidoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
     }
 
     public Pedido guardar(Pedido pedido) {
@@ -52,7 +51,7 @@ public class PedidoService {
     // ✅ Crear un pedido a partir de DTO (cliente gestionado internamente)
     public Pedido crearPedidoDesdeDTO(PedidoDTO dto) {
         Restaurante restaurante = restauranteRepository.findById(dto.getRestauranteId())
-            .orElseThrow(() -> new RuntimeException("Restaurante no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Restaurante no encontrado"));
 
         Pedido pedido = new Pedido();
         pedido.setFechaHora(dto.getFechaHora() != null ? dto.getFechaHora() : LocalDateTime.now());
@@ -65,7 +64,7 @@ public class PedidoService {
 
         // ✅ Agrupar platos por ID para contar cantidades
         var mapaCantidad = dto.getPlatos().stream()
-            .collect(Collectors.groupingBy(id -> id, Collectors.counting()));
+                .collect(Collectors.groupingBy(id -> id, Collectors.counting()));
 
         double total = 0.0;
 
@@ -74,7 +73,7 @@ public class PedidoService {
             int cantidad = entry.getValue().intValue();
 
             Plato plato = platoRepository.findById(platoId)
-                .orElseThrow(() -> new RuntimeException("Plato no encontrado: " + platoId));
+                    .orElseThrow(() -> new RuntimeException("Plato no encontrado: " + platoId));
 
             PedidoDetalle detalle = new PedidoDetalle();
             detalle.setPedido(pedidoGuardado);
@@ -91,19 +90,17 @@ public class PedidoService {
         return pedidoRepository.save(pedidoGuardado);
     }
 
-
-
     // ✅ Obtener pedido por código
     public Pedido obtenerPedidoPorCodigo(String codigoPedido) {
         return pedidoRepository.buscarPorCodigoIgnorandoCase(codigoPedido)
 
-            .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
     }
 
     // ✅ Confirmar pedido (ejemplo de paso de estado y lógica de stock)
     public void confirmarPedido(Long pedidoId) {
         Pedido pedido = pedidoRepository.findById(pedidoId)
-            .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
         List<PedidoDetalle> detalles = pedidoDetalleRepository.findAllByPedido(pedido);
 
@@ -125,13 +122,13 @@ public class PedidoService {
         }
 
         // Actualizamos estado
-        //pedido.setEstadoPedido(Pedido.EstadoPedido.EN_PROCESO);
+        // pedido.setEstadoPedido(Pedido.EstadoPedido.EN_PROCESO);
         pedidoRepository.save(pedido);
     }
-    
+
     public void actualizarEstado(Long pedidoId, EstadoPedido nuevoEstado) {
         Pedido pedido = pedidoRepository.findById(pedidoId)
-            .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
         pedido.setEstadoPedido(nuevoEstado);
         pedidoRepository.save(pedido);
     }
@@ -139,10 +136,9 @@ public class PedidoService {
     public List<Pedido> obtenerPedidosPorRestauranteYEstado(Long restauranteId, EstadoPedido estado) {
         return pedidoRepository.findAllByRestauranteIdAndEstadoPedido(restauranteId, estado);
     }
-    
+
     public List<Pedido> obtenerPedidosPorRestaurante(Long restauranteId) {
         return pedidoRepository.findAllByRestauranteId(restauranteId);
     }
-
 
 }

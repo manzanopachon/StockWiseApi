@@ -5,34 +5,33 @@ import jakarta.persistence.*;
 @Entity
 public class Empleado {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String nombre;
+	private String nombre;
 
-    private String apellidos;
+	private String apellidos;
 
-    @Column(unique = true)
-    private String correo;
+	@Column(unique = true)
+	private String correo;
 
-    private String contraseña;
+	private String contraseña;
 
-    private String puestoTrabajo;
+	private String puestoTrabajo;
 
-    private String codigoValidacion;
+	private String codigoValidacion;
 
-    private Boolean validado = false;
-    
-    private int intentosRestantes = 3;
+	private Boolean validado = false;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "restaurante_id")
-    private Restaurante restaurante;
+	private int intentosRestantes = 3;
 
-   
-    // Getters y setters
-    
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "restaurante_id")
+	private Restaurante restaurante;
+
+	// Getters y setters
+
 	public Long getId() {
 		return id;
 	}
@@ -113,6 +112,4 @@ public class Empleado {
 		this.intentosRestantes = intentosRestantes;
 	}
 
-    
-    
 }

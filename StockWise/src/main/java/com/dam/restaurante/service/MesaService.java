@@ -14,7 +14,7 @@ public class MesaService {
     private MesaRepository mesaRepository;
 
     public Optional<Long> getRestauranteIdByNumeroMesa(Integer numeroMesa, Long restauranteID) {
-        return mesaRepository.findByNumeroAndRestauranteId(numeroMesa,restauranteID)
+        return mesaRepository.findByNumeroAndRestauranteId(numeroMesa, restauranteID)
                 .map(mesa -> mesa.getRestaurante().getId());
     }
 }

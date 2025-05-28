@@ -31,6 +31,7 @@ public class RestauranteService {
     public Restaurante obtenerPorNombre(String nombre) {
         return restauranteRepository.findByNombre(nombre);
     }
+
     public Optional<Restaurante> obtenerPorId(Long id) {
         return restauranteRepository.findById(id);
     }

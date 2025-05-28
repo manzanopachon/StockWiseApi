@@ -31,7 +31,8 @@ public class AuthController {
     public List<Empleado> obtenerTodos() {
         return empleadoService.obtenerTodos();
     }
-    //Endpoint para ver un empleado
+
+    // Endpoint para ver un empleado
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerEmpleadoPorId(@PathVariable Long id) {
         Optional<Empleado> empleado = empleadoService.obtenerPorId(id);
@@ -42,7 +43,6 @@ public class AuthController {
         }
     }
 
-    
     // Endpoint para registrar un empleado
     @PostMapping("/registro")
     public EmpleadoDTO registrarEmpleado(@RequestBody Empleado empleado) {
@@ -53,21 +53,19 @@ public class AuthController {
     // Endpoint para verificar el código de verificación
     @PostMapping("/verificar/{id}")
     public ResponseEntity<?> verificarCodigo(
-        @PathVariable Long id,
-        @RequestParam String codigo
-    ) {
+            @PathVariable Long id,
+            @RequestParam String codigo) {
         Optional<Empleado> optionalEmpleado = empleadoService.verificarCodigo(id, codigo);
 
         if (optionalEmpleado.isPresent()) {
             return ResponseEntity.ok(new EmpleadoDTO(optionalEmpleado.get()));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body("Código incorrecto");
+                    .body("Código incorrecto");
         }
     }
 
-
- // Endpoint para iniciar sesión
+    // Endpoint para iniciar sesión
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
@@ -79,8 +77,7 @@ public class AuthController {
                 return ResponseEntity.ok(Map.of(
                         "mensaje", "Primera vez. Introduce el código de verificación",
                         "requiereCodigo", true,
-                        "empleadoId", empleado.getId()
-                ));
+                        "empleadoId", empleado.getId()));
             }
 
             // Asegúrate de que el nombre esté en la respuesta
@@ -88,17 +85,13 @@ public class AuthController {
                     "mensaje", "Login exitoso",
                     "requiereCodigo", false,
                     "empleadoId", empleado.getId(),
-                    "nombreEmpleado", empleado.getNombre()  // Asegúrate de incluir el nombre aquí
+                    "nombreEmpleado", empleado.getNombre() // Asegúrate de incluir el nombre aquí
             ));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(Map.of(
-                    "error", e.getMessage()
-            ));
+                    "error", e.getMessage()));
         }
     }
-
-
-    
 
 }

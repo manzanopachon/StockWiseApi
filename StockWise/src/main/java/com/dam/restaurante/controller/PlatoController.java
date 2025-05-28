@@ -34,7 +34,6 @@ public class PlatoController {
         return platoService.obtenerTodos();
     }
 
-    
     @GetMapping("/restaurante/{restauranteId}")
     public List<PlatoDTO> listarPorRestaurante(@PathVariable Long restauranteId) {
         return platoService.obtenerPorRestauranteId(restauranteId);
@@ -51,7 +50,6 @@ public class PlatoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(platoDTO);
     }
 
-
     @PutMapping("/{id}")
     public PlatoDTO actualizarPlato(@PathVariable Long id, @RequestBody PlatoDTO dto) {
         return platoService.actualizarPlato(id, dto);
@@ -61,7 +59,6 @@ public class PlatoController {
     public void eliminarPlato(@PathVariable Long id) {
         platoService.eliminarPlato(id);
     }
-    
 
     // 1. Asignar múltiples ingredientes a un plato
     @PostMapping("/{platoId}/ingredientes")
@@ -71,6 +68,7 @@ public class PlatoController {
         platoService.asignarIngredientesAPlato(platoId, ingredientesConCantidad);
         return ResponseEntity.ok("Ingredientes asignados correctamente.");
     }
+
     // 2. Modificar cantidad de un ingrediente específico en un plato
     @PutMapping("/{platoId}/ingredientes/{ingredienteId}")
     public ResponseEntity<?> modificarCantidadIngrediente(
@@ -81,7 +79,7 @@ public class PlatoController {
         return ResponseEntity.ok("Cantidad modificada correctamente.");
     }
 
- // 3. Eliminar un ingrediente de un plato
+    // 3. Eliminar un ingrediente de un plato
     @DeleteMapping("/{platoId}/ingredientes/{ingredienteId}")
     public ResponseEntity<?> eliminarIngredienteDePlato(
             @PathVariable Long platoId,
@@ -89,8 +87,8 @@ public class PlatoController {
         platoService.eliminarIngredienteDePlato(platoId, ingredienteId);
         return ResponseEntity.ok("Ingrediente eliminado del plato.");
     }
-    
- // 4. Obtener ingredientes de un plato
+
+    // 4. Obtener ingredientes de un plato
     @GetMapping("/{platoId}/ingredientes")
     public ResponseEntity<List<PlatoIngredienteDTO>> obtenerIngredientesDePlato(@PathVariable Long platoId) {
         List<PlatoIngredienteDTO> ingredientesDTO = platoService.obtenerIngredientesDePlatoDTO(platoId);

@@ -19,7 +19,7 @@ public class IngredienteService {
 
     @Autowired
     private IngredienteRepository ingredienteRepository;
-    
+
     @Autowired
     private RestauranteRepository restauranteRepository;
 
@@ -32,8 +32,8 @@ public class IngredienteService {
 
     public List<IngredienteDTO> obtenerIngredientesPorRestaurante(Long restauranteId) {
         return ingredienteRepository.findByRestauranteId(restauranteId).stream()
-            .map(this::toDTO)
-            .collect(Collectors.toList());
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     public IngredienteDTO obtenerPorId(Long id) {
@@ -53,7 +53,7 @@ public class IngredienteService {
         System.out.println("Prioridad Alta: " + ingrediente.getPrioridadAlta());
         System.out.println("Proveedor: " + ingrediente.getProveedor());
         System.out.println("Foto URL: " + ingrediente.getFotoUrl());
-        
+
         return toDTO(ingredienteRepository.save(ingrediente));
     }
 
@@ -87,12 +87,12 @@ public class IngredienteService {
 
         // Buscar el restaurante por ID
         Restaurante restaurante = restauranteRepository.findById(dto.getRestauranteId())
-            .orElseThrow(() -> new RuntimeException("Restaurante no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Restaurante no encontrado"));
         ingrediente.setRestaurante(restaurante);
 
         return toDTO(ingredienteRepository.save(ingrediente));
     }
-    
+
     public boolean eliminarIngrediente(Long id) {
         if (ingredienteRepository.existsById(id)) {
             ingredienteRepository.deleteById(id);
@@ -104,19 +104,16 @@ public class IngredienteService {
     // Mappers
     public IngredienteDTO toDTO(Ingrediente ingrediente) {
         return new IngredienteDTO(
-            ingrediente.getId(),
-            ingrediente.getNombre(),
-            ingrediente.getUnidadMedida(),
-            ingrediente.getCantidadStock(),
-            ingrediente.getPrioridadBaja(),
-            ingrediente.getPrioridadMedia(),
-            ingrediente.getPrioridadAlta(),
-            ingrediente.getProveedor(),
-            ingrediente.getFotoUrl()
-        );
+                ingrediente.getId(),
+                ingrediente.getNombre(),
+                ingrediente.getUnidadMedida(),
+                ingrediente.getCantidadStock(),
+                ingrediente.getPrioridadBaja(),
+                ingrediente.getPrioridadMedia(),
+                ingrediente.getPrioridadAlta(),
+                ingrediente.getProveedor(),
+                ingrediente.getFotoUrl());
     }
-
-
 
     private Ingrediente toEntity(IngredienteDTO dto) {
         Ingrediente i = new Ingrediente();

@@ -21,14 +21,14 @@ public class MesaController {
 
     @Autowired
     private MesaService mesaService;
-    
+
     @Autowired
     private MesaRepository mesaRepository;
 
     @GetMapping("/restaurante-id")
     public ResponseEntity<Long> getRestauranteIdFromMesa(
-        @RequestParam int numeroMesa,
-        @RequestParam Long restauranteId) {
+            @RequestParam int numeroMesa,
+            @RequestParam Long restauranteId) {
 
         Optional<Mesa> mesa = mesaRepository.findByNumeroAndRestauranteId(numeroMesa, restauranteId);
 

@@ -7,9 +7,11 @@ public class PlatoIngredienteDTO {
     private Double cantidadStock;
     private Double cantidadNecesaria;
 
-    public PlatoIngredienteDTO() {}
+    public PlatoIngredienteDTO() {
+    }
 
-    public PlatoIngredienteDTO(Long ingredienteId, String nombre, String unidadMedida, Double cantidadStock, Double cantidadNecesaria) {
+    public PlatoIngredienteDTO(Long ingredienteId, String nombre, String unidadMedida, Double cantidadStock,
+            Double cantidadNecesaria) {
         this.ingredienteId = ingredienteId;
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;

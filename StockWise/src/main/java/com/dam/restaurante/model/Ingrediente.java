@@ -5,39 +5,39 @@ import jakarta.persistence.*;
 @Entity
 public class Ingrediente {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String nombre;
+	private String nombre;
 
-    private String unidadMedida;
+	private String unidadMedida;
 
-    private Double cantidadStock;
+	private Double cantidadStock;
 
-    @Column(name = "prioridad_alta")
-    private Double prioridadAlta;
+	@Column(name = "prioridad_alta")
+	private Double prioridadAlta;
 
-    @Column(name = "prioridad_media")
-    private Double prioridadMedia;
+	@Column(name = "prioridad_media")
+	private Double prioridadMedia;
 
-    @Column(name = "prioridad_baja")
-    private Double prioridadBaja;
+	@Column(name = "prioridad_baja")
+	private Double prioridadBaja;
 
-    
-    private String proveedor;
+	private String proveedor;
 
-    @Column(columnDefinition = "TEXT")
-    private String fotoUrl;
+	@Column(columnDefinition = "TEXT")
+	private String fotoUrl;
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	@ManyToOne
 	@JoinColumn(name = "restaurante_id")
 	private Restaurante restaurante;
 
-//Getters y Setters
+	// Getters y Setters
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -114,6 +114,4 @@ public class Ingrediente {
 		this.restaurante = restaurante;
 	}
 
-	
-
-}	
+}

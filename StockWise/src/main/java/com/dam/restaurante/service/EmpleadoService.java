@@ -19,25 +19,23 @@ public class EmpleadoService {
     @Autowired
     private EmpleadoRepository empleadoRepository;
 
-    
-
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     // Método para registrar un nuevo empleado
     @Transactional
     public Empleado registrarEmpleado(Empleado empleado) {
         // Encriptamos la contraseña
         empleado.setContraseña(passwordEncoder.encode(empleado.getContraseña()));
-        
+
         // Generamos un código de verificación aleatorio de 5 caracteres
         String codigoVerificacion = generarCodigoVerificacion();
         empleado.setCodigoValidacion(codigoVerificacion);
-        
-        
+
         // Guardamos el empleado
         return empleadoRepository.save(empleado);
     }
-    
+
     public List<Empleado> obtenerTodos() {
         return empleadoRepository.findAll();
     }
@@ -57,7 +55,7 @@ public class EmpleadoService {
     // Método para verificar el código de verificación
     public Optional<Empleado> verificarCodigo(Long id, String codigo) {
         Empleado empleado = empleadoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
 
         if (empleado.getValidado()) {
             return Optional.of(empleado);
@@ -80,7 +78,8 @@ public class EmpleadoService {
             return Optional.empty();
         }
     }
-    //Metodo para obtener un empleado por su ID
+
+    // Metodo para obtener un empleado por su ID
     public Optional<Empleado> obtenerPorId(Long id) {
         return empleadoRepository.findById(id);
     }

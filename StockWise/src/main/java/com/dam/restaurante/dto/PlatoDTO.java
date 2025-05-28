@@ -3,47 +3,51 @@ package com.dam.restaurante.dto;
 import java.util.List;
 
 public class PlatoDTO {
-    private Long id;
-    private String nombre;
-    private String descripcion;
-    private Double precio;
-    private CategoriaDTO categoria;
-    private Long restauranteId;
-    
-    // Nuevo: lista de ingredientes con cantidad
-    private List<IngredienteCantidadDTO> ingredientes;
+	private Long id;
+	private String nombre;
+	private String descripcion;
+	private Double precio;
+	private CategoriaDTO categoria;
+	private Long restauranteId;
 
-    // Constructor, getters y setters
+	// Nuevo: lista de ingredientes con cantidad
+	private List<IngredienteCantidadDTO> ingredientes;
 
-    public static class IngredienteCantidadDTO {
-        private Long ingredienteId;
-        private Double cantidad;
+	// Constructor, getters y setters
+
+	public static class IngredienteCantidadDTO {
+		private Long ingredienteId;
+		private Double cantidad;
+
 		public Long getIngredienteId() {
 			return ingredienteId;
 		}
+
 		public void setIngredienteId(Long ingredienteId) {
 			this.ingredienteId = ingredienteId;
 		}
+
 		public Double getCantidad() {
 			return cantidad;
 		}
+
 		public void setCantidad(Double cantidad) {
 			this.cantidad = cantidad;
 		}
+
 		public IngredienteCantidadDTO(Long ingredienteId, Double cantidad) {
 			super();
 			this.ingredienteId = ingredienteId;
 			this.cantidad = cantidad;
 		}
+
 		public IngredienteCantidadDTO() {
 			super();
 		}
 
-        // Constructor vacío, getters y setters
-        
-    }
-    
-    
+		// Constructor vacío, getters y setters
+
+	}
 
 	public PlatoDTO(Long id, String nombre, String descripcion, Double precio, CategoriaDTO categoria,
 			Long restauranteId, List<IngredienteCantidadDTO> ingredientes) {
@@ -117,4 +121,3 @@ public class PlatoDTO {
 		this.ingredientes = ingredientes;
 	}
 }
-

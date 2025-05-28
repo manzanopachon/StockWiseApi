@@ -5,22 +5,21 @@ import jakarta.persistence.*;
 @Entity
 public class Cliente {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private Integer numeroMesa;
+	private Integer numeroMesa;
 
-    private String nombre;
+	private String nombre;
 
-    private String correo;
+	private String correo;
 
-    private String telefono;
+	private String telefono;
 
-    private Boolean esVIP = false;
+	private Boolean esVIP = false;
 
-    
-    // Getters y setters
+	// Getters y setters
 	public Long getId() {
 		return id;
 	}
@@ -68,5 +67,5 @@ public class Cliente {
 	public void setEsVIP(Boolean esVIP) {
 		this.esVIP = esVIP;
 	}
-    
+
 }
