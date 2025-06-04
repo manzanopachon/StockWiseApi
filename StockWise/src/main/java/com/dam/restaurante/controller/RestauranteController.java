@@ -35,7 +35,8 @@ public class RestauranteController {
     public List<RestauranteDTO> obtenerTodos() {
         return restauranteService.obtenerTodos();
     }
-
+    
+    //Obtener un restaurante por un nombre
     @GetMapping("/nombre/{nombre}")
     public ResponseEntity<RestauranteDTO> getRestaurantePorNombre(@PathVariable String nombre) {
         Restaurante restaurante = restauranteService.obtenerPorNombre(nombre);

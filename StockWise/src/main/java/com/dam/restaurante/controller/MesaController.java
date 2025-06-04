@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dam.restaurante.model.Mesa;
 import com.dam.restaurante.repository.MesaRepository;
-import com.dam.restaurante.service.MesaService;
+
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -20,11 +20,8 @@ import com.dam.restaurante.service.MesaService;
 public class MesaController {
 
     @Autowired
-    private MesaService mesaService;
-
-    @Autowired
     private MesaRepository mesaRepository;
-
+    
     @GetMapping("/restaurante-id")
     public ResponseEntity<Long> getRestauranteIdFromMesa(
             @RequestParam int numeroMesa,

@@ -41,7 +41,7 @@ public class Pedido {
 
     // Relación 1:N con detalles
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PedidoDetalle> detalles = new ArrayList<>(); // ✅ Inicializado
+    private List<PedidoDetalle> detalles = new ArrayList<>(); //Inicializado
 
     public Pedido() {
     }

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dam.restaurante.dto.PlatoDTO;
 import com.dam.restaurante.dto.PlatoIngredienteDTO;
-import com.dam.restaurante.model.Plato;
 import com.dam.restaurante.service.PlatoService;
 
 @RestController
@@ -28,33 +27,34 @@ public class PlatoController {
 
     @Autowired
     private PlatoService platoService;
-
+    //Listar todos los platos
     @GetMapping
     public List<PlatoDTO> listarPlatos() {
         return platoService.obtenerTodos();
     }
-
+    //Listar todos los platos de un restaurante segun el restaurante id
     @GetMapping("/restaurante/{restauranteId}")
     public List<PlatoDTO> listarPorRestaurante(@PathVariable Long restauranteId) {
         return platoService.obtenerPorRestauranteId(restauranteId);
     }
-
+    //Obtener un plato segund su id
     @GetMapping("/{id}")
     public PlatoDTO obtenerPlato(@PathVariable Long id) {
         return platoService.obtenerPorId(id);
     }
 
+    //Crear un plato
     @PostMapping
     public ResponseEntity<PlatoDTO> crearPlato(@RequestBody PlatoDTO platoDTO) {
-        Plato plato = platoService.crearPlato(platoDTO);
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(platoDTO);
     }
-
+    //Actualizar el plato segun su id
     @PutMapping("/{id}")
     public PlatoDTO actualizarPlato(@PathVariable Long id, @RequestBody PlatoDTO dto) {
         return platoService.actualizarPlato(id, dto);
     }
-
+    //Eliminar un plato segun su id
     @DeleteMapping("/{id}")
     public void eliminarPlato(@PathVariable Long id) {
         platoService.eliminarPlato(id);

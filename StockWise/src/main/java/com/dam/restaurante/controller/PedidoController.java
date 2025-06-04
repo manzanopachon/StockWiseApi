@@ -20,7 +20,7 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    // 🟢 Crear pedido (cliente)
+    //Crear pedido
     @PostMapping("/crear")
     public ResponseEntity<?> crearPedido(@RequestBody PedidoDTO dto) {
         try {
@@ -31,7 +31,7 @@ public class PedidoController {
         }
     }
 
-    // 🟢 Consultar pedido por código (cliente)
+    //Consultar pedido por código
     @GetMapping("/buscar/{codigo}")
     public ResponseEntity<?> buscarPorCodigo(@PathVariable String codigo) {
         try {
@@ -42,7 +42,7 @@ public class PedidoController {
         }
     }
 
-    // 🟢 Obtener solo el estado del pedido (cliente)
+    //Obtener solo el estado del pedido
     @GetMapping("/estado/{codigo}")
     public ResponseEntity<?> obtenerEstadoPorCodigo(@PathVariable String codigo) {
         try {
@@ -53,7 +53,7 @@ public class PedidoController {
         }
     }
 
-    // 🔵 Obtener todos los pedidos pendientes por restaurante (empleado)
+    //Obtener todos los pedidos pendientes por restaurante (empleado)
     @GetMapping("/restaurante/{id}/pendientes")
     public ResponseEntity<?> obtenerPedidosPendientes(@PathVariable Long id) {
         List<Pedido> pedidos = pedidoService.obtenerPedidosPorRestauranteYEstado(id, EstadoPedido.PENDIENTE);
@@ -72,7 +72,7 @@ public class PedidoController {
         return ResponseEntity.ok(dtos);
     }
 
-    // 🔵 Confirmar pedido y descontar ingredientes (empleado)
+    //Confirmar pedido y descontar ingredientes (empleado)
     @PostMapping("/confirmar/{id}")
     public ResponseEntity<?> confirmarPedido(@PathVariable Long id) {
         try {
@@ -83,7 +83,7 @@ public class PedidoController {
         }
     }
 
-    // 🔵 Cambiar estado manualmente (empleado)
+    //Cambiar estado manualmente (empleado)
     @PatchMapping("/{id}/estado")
     public ResponseEntity<?> cambiarEstado(@PathVariable Long id, @RequestParam EstadoPedido estado) {
         try {

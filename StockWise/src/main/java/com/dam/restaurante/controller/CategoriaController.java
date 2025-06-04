@@ -1,7 +1,7 @@
 package com.dam.restaurante.controller;
 
 import com.dam.restaurante.dto.CategoriaDTO;
-import com.dam.restaurante.model.Categoria;
+
 import com.dam.restaurante.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
