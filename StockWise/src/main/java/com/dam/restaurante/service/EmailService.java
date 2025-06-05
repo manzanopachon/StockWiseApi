@@ -17,7 +17,7 @@ public class EmailService {
             MimeMessage mensaje = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mensaje, true);
 
-            helper.setTo("tuemail@soulon.es");
+            helper.setTo("jmauriciomp22@gmail.com");
             helper.setSubject("📥 Nuevo empleado registrado en StockWise");
             helper.setText(contenidoHtml, true); // Activamos HTML
 
