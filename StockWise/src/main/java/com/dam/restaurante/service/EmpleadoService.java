@@ -22,18 +22,44 @@ public class EmpleadoService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     // Método para registrar un nuevo empleado
     @Transactional
     public Empleado registrarEmpleado(Empleado empleado) {
-        // Encriptamos la contraseña
-        empleado.setContraseña(passwordEncoder.encode(empleado.getContraseña()));
+         // Encriptamos la contraseña
+    empleado.setContraseña(passwordEncoder.encode(empleado.getContraseña()));
 
-        // Generamos un código de verificación aleatorio de 5 caracteres
-        String codigoVerificacion = generarCodigoVerificacion();
-        empleado.setCodigoValidacion(codigoVerificacion);
+    // Generamos un código de verificación aleatorio
+    String codigoVerificacion = generarCodigoVerificacion();
+    empleado.setCodigoValidacion(codigoVerificacion);
 
-        // Guardamos el empleado
-        return empleadoRepository.save(empleado);
+    // Guardamos el empleado en la base de datos
+    Empleado guardado = empleadoRepository.save(empleado);
+
+    // Enviar correo al administrador
+    String contenido = """
+        <h2>📥 Nuevo empleado registrado en StockWise</h2>
+        <ul>
+            <li><strong>Nombre:</strong> %s %s</li>
+            <li><strong>Correo:</strong> %s</li>
+            <li><strong>Restaurante:</strong> %s</li>
+            <li><strong>Puesto:</strong> %s</li>
+            <li><strong>Código de validación:</strong> <span style='color:blue;'>%s</span></li>
+        </ul>
+        """.formatted(
+            guardado.getNombre(),
+            guardado.getApellidos(),
+            guardado.getCorreo(),
+            guardado.getRestaurante().getNombre(),
+            guardado.getPuestoTrabajo(),
+            guardado.getCodigoValidacion()
+    );
+
+    emailService.enviarDatosRegistro(contenido);
+
+    return guardado;
     }
 
     public List<Empleado> obtenerTodos() {
