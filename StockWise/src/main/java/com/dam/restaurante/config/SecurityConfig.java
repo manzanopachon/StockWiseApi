@@ -37,7 +37,9 @@ public class SecurityConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                 		.allowedOrigins("https://manzanopachon.github.io")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE");
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                		.allowedHeaders("*")
+                		.allowCredentials(false); // Usa true solo si manejas cookies o auth
             }
         };
     }
