@@ -36,11 +36,12 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                		.allowedOrigins("https://manzanopachon.github.io")
+                        .allowedOrigins("https://manzanopachon.github.io")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
-                		.allowedHeaders("*")
-                		.allowCredentials(false); // Usa true solo si manejas cookies o auth
+                        .allowedHeaders("*")
+                        .allowCredentials(false); // importante que sea false si no usas cookies
             }
         };
     }
+
 }
