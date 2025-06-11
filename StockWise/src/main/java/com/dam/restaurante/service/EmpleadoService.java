@@ -112,7 +112,8 @@ public class EmpleadoService {
 
     // Método para iniciar sesión
     public Empleado iniciarSesion(String correo, String contraseña) {
-        Empleado empleado = empleadoRepository.findByCorreo(correo);
+        Empleado empleado = empleadoRepository.findByCorreo(correo)
+            .orElseThrow(() -> new RuntimeException("Correo no registrado"));
         if (empleado != null && passwordEncoder.matches(contraseña, empleado.getContraseña())) {
             return empleado;
         }
