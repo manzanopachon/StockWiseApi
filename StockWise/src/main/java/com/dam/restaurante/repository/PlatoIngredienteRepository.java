@@ -20,4 +20,6 @@ public interface PlatoIngredienteRepository extends JpaRepository<PlatoIngredien
 
     void deleteByPlato_IdAndIngredienteId(Long platoId, Long ingredienteId); // Cambiado a 'Plato_Id'
 
+    boolean existsByPlatoIdAndIngredienteId(Long platoId, Long ingredienteId);
+
 }

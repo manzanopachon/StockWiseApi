@@ -22,6 +22,8 @@ import com.dam.restaurante.repository.PlatoIngredienteRepository;
 import com.dam.restaurante.repository.PlatoRepository;
 import com.dam.restaurante.repository.RestauranteRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class PlatoService {
 
@@ -143,29 +145,29 @@ public class PlatoService {
                 ingredientesDTO);
     }
 
-    public void asignarIngredientesAPlato(Long platoId, Map<Long, Double> ingredientesConCantidad) {
-        Plato plato = platoRepository.findById(platoId)
-                .orElseThrow(() -> new RuntimeException("Plato no encontrado con ID: " + platoId));
+@Transactional
+public void asignarIngredientesAPlato(Long platoId, Map<Long, Double> ingredientesConCantidad) {
+    Plato plato = platoRepository.findById(platoId)
+            .orElseThrow(() -> new RuntimeException("Plato no encontrado con ID: " + platoId));
 
-        // Elimina relaciones anteriores si las hubiera
-        platoIngredienteRepository.deleteByPlatoId(platoId);
+    for (Map.Entry<Long, Double> entry : ingredientesConCantidad.entrySet()) {
+        Long ingredienteId = entry.getKey();
+        Double cantidad = entry.getValue();
 
-        // Recorremos el mapa de ingredientes y cantidad
-        for (Map.Entry<Long, Double> entry : ingredientesConCantidad.entrySet()) {
-            Long ingredienteId = entry.getKey();
-            Double cantidad = entry.getValue();
+        Ingrediente ingrediente = ingredienteRepository.findById(ingredienteId)
+                .orElseThrow(() -> new RuntimeException("Ingrediente no encontrado con ID: " + ingredienteId));
 
-            Ingrediente ingrediente = ingredienteRepository.findById(ingredienteId)
-                    .orElseThrow(() -> new RuntimeException("Ingrediente no encontrado con ID: " + ingredienteId));
-
+        // Verificar si ya existe la relación para evitar duplicados
+        boolean yaExiste = platoIngredienteRepository.existsByPlatoIdAndIngredienteId(platoId, ingredienteId);
+        if (!yaExiste) {
             PlatoIngrediente relacion = new PlatoIngrediente();
             relacion.setPlato(plato);
             relacion.setIngrediente(ingrediente);
             relacion.setCantidadNecesaria(cantidad);
-
             platoIngredienteRepository.save(relacion);
         }
     }
+}
 
     // Modificar cantidad
     public void modificarCantidadIngrediente(Long platoId, Long ingredienteId, Double nuevaCantidad) {

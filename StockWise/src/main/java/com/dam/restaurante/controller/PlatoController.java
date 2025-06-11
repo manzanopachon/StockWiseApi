@@ -2,6 +2,7 @@ package com.dam.restaurante.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,10 +65,23 @@ public class PlatoController {
     @PostMapping("/{platoId}/ingredientes")
     public ResponseEntity<?> asignarIngredientes(
             @PathVariable Long platoId,
-            @RequestBody Map<Long, Double> ingredientesConCantidad) {
-        platoService.asignarIngredientesAPlato(platoId, ingredientesConCantidad);
-        return ResponseEntity.ok("Ingredientes asignados correctamente.");
+            @RequestBody Map<String, Double> ingredientesConCantidad) {
+        try {
+            Map<Long, Double> ingredientesConvertidos = ingredientesConCantidad.entrySet().stream()
+                .collect(Collectors.toMap(
+                    e -> Long.parseLong(e.getKey()),
+                    Map.Entry::getValue
+                ));
+
+            platoService.asignarIngredientesAPlato(platoId, ingredientesConvertidos);
+            return ResponseEntity.ok("Ingredientes asignados correctamente.");
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al asignar ingredientes: " + e.getMessage());
+        }
     }
+
 
     // 2. Modificar cantidad de un ingrediente específico en un plato
     @PutMapping("/{platoId}/ingredientes/{ingredienteId}")
